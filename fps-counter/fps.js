@@ -9,6 +9,8 @@
     var lastSecond;
 
     function init() {
+      var $canvas = $('js-counter');
+      $canvas.attr('width', $('html').outerWidth());
       framesPerSecond = 0;
       lastSecond = framesPerSecond;
 
@@ -16,7 +18,6 @@
       ctx = document.getElementById('js-counter').getContext('2d');
 
       setInterval(loop, 1);
-      setInterval(renderCounter, 1000);
       setInterval(reset, 1000);
     }
 
@@ -56,7 +57,7 @@
 
     function renderCounter() {
       ctx.save();
-      ctx.font = 'bold 30px sans-serif';
+      ctx.font = 'bold 30px mono';
       ctx.fillStyle = 'rgba(0, 0, 0, 1)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
