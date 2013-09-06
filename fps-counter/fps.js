@@ -23,7 +23,6 @@
 
     function loop() {
       update();
-      updateCounter();
       render();
     }
 
@@ -43,6 +42,7 @@
       }
 
       ctx.restore();
+      updateCounter();
       renderCounter();
     }
 
