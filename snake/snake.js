@@ -5,20 +5,22 @@
 
   JS_SNAKE.equalCoordinates = function (coord1, coord2) {
     return coord1[0] === coord2[0] && coord1[1] === coord2[1];
-  }
+  };
 
   JS_SNAKE.game = (function () {
     var ctx;
     var snake;
     var apple;
 
-    var frameInterval = 50;
+    var frameInterval = 100;
 
     JS_SNAKE.size = {
-      width : 500,
-      height: 200,
-      block : 10
+      width : 300,
+      height: 300,
+      block : 20
     };
+    JS_SNAKE.size.widthInBlocks = JS_SNAKE.size.width / JS_SNAKE.size.block;
+    JS_SNAKE.size.heightInBlocks = JS_SNAKE.size.height / JS_SNAKE.size.block;
     var coord = {
       x : 0,
       y : 0
@@ -64,6 +66,11 @@
           evt.preventDefault();
         }
       });
+
+      $(JS_SNAKE).bind('appleEaten', function (evt, snakePosition) {
+        apple.move(snakePosition);
+        frameInterval *= 0.99;
+      });
     }
 
     return {
@@ -102,9 +109,14 @@
       return position;
     }
 
+    function move() {
+      position = getRandomPosition();
+    }
+
     return {
       draw: draw,
-      getPosition: getPosition
+      getPosition: getPosition,
+      move: move
     };
   };
 
