@@ -11,7 +11,7 @@
 
     JS_SNAKE.size = {
       width : 500,
-      height: 500,
+      height: 200,
       block : 10
     };
     var coord = {
@@ -27,6 +27,7 @@
       ctx = $canvas[0].getContext('2d');
       snake = JS_SNAKE.snake();
 
+      command();
       loop();
     }
 
@@ -35,6 +36,25 @@
       snake.advance();
       snake.draw(ctx);
       setTimeout(loop, frameInterval);
+    }
+
+    function command() {
+      var keysToDirections = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
+      };
+
+      $(document).keydown(function (evt) {
+        var key = evt.which;
+        var direction = keysToDirections[key];
+
+        if (direction) {
+          snake.setDirection(direction);
+          evt.preventDefault();
+        }
+      });
     }
 
     return {
@@ -48,6 +68,22 @@
     position.push([5, 4]);
     position.push([4, 4]);
     var direction = 'right';
+    var nextDirection = direction;
+
+    function setDirection (newDirection) {
+      var allowedDirections = {
+        left:  ['up', 'down'],
+        right: ['up', 'down'],
+        up:    ['left', 'right'],
+        down:  ['left', 'right'],
+      };
+      if (allowedDirections[direction].indexOf(newDirection) !== -1) {
+        nextDirection = newDirection;
+      }
+      else {
+        throw('Invalid direction');
+      }
+    }
 
     function drawBlock(ctx, pos) {
       var x = JS_SNAKE.size.block * pos[0];
@@ -66,14 +102,33 @@
 
     function advance() {
       var nextPosition = position[0].slice();
-      nextPosition[0]++;
+      direction = nextDirection;
+
+      switch (direction) {
+        case 'left':
+          nextPosition[0] -= 1;
+          break;
+        case 'up':
+          nextPosition[1] -= 1;
+          break;
+        case 'right':
+          nextPosition[0] += 1;
+          break;
+        case 'down':
+          nextPosition[1] += 1;
+          break;
+        default:
+          throw('Invalid direction');
+      }
+
       position.unshift(nextPosition);
       position.pop();
     }
 
     return {
       draw: draw,
-      advance: advance
+      advance: advance,
+      setDirection : setDirection
     }
   };
 
