@@ -7,10 +7,22 @@
     return coord1[0] === coord2[0] && coord1[1] === coord2[1];
   };
 
+  JS_SNAKE.checkCoordinateInArray = function (coord, arr) {
+    var isInArray = false;
+    $.each(arr, function (index, item) {
+      if (JS_SNAKE.equalCoordinates(coord, item)) {
+        isInArray = true;
+      }
+    });
+    return isInArray;
+  };
+
   JS_SNAKE.game = (function () {
     var ctx;
     var snake;
     var apple;
+    var score;
+    var scoreAmount;
 
     var frameInterval = 100;
 
@@ -35,6 +47,9 @@
       ctx = $canvas[0].getContext('2d');
       snake = JS_SNAKE.snake();
       apple = JS_SNAKE.apple();
+      score = JS_SNAKE.score();
+
+      scoreAmount = 0;
 
       command();
       loop();
@@ -46,6 +61,7 @@
       snake.advance(apple);
       snake.draw(ctx);
       apple.draw(ctx);
+      score.draw(ctx, scoreAmount);
       setTimeout(loop, frameInterval);
     }
 
@@ -69,7 +85,8 @@
 
       $(JS_SNAKE).bind('appleEaten', function (evt, snakePosition) {
         apple.move(snakePosition);
-        frameInterval *= 0.99;
+        frameInterval *= 0.95;
+        scoreAmount++;
       });
     }
 
@@ -77,6 +94,22 @@
       init: init
     };
   })();
+
+  JS_SNAKE.score = function () {
+    function draw(ctx, score) {
+      ctx.save();
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(score, JS_SNAKE.size.width - 50, JS_SNAKE.size.height - 20);
+      ctx.restore();
+    }
+
+    return {
+      draw: draw
+    };
+  };
 
   JS_SNAKE.apple = function () {
     var position = [6, 6];
