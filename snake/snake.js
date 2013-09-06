@@ -6,6 +6,7 @@
   JS_SNAKE.game = (function () {
     var ctx;
     var snake;
+    var apple;
 
     var frameInterval = 50;
 
@@ -24,17 +25,21 @@
       $canvas.attr('width', JS_SNAKE.size.width);
       $canvas.attr('height', JS_SNAKE.size.height);
 
+      // The context is used for drawing.
       ctx = $canvas[0].getContext('2d');
       snake = JS_SNAKE.snake();
+      apple = JS_SNAKE.apple();
 
       command();
       loop();
     }
 
     function loop() {
+      // Sets all pixels to black w/ 0 opacity.
       ctx.clearRect(0, 0, JS_SNAKE.size.width,JS_SNAKE.size.height);
       snake.advance();
       snake.draw(ctx);
+      apple.draw(ctx);
       setTimeout(loop, frameInterval);
     }
 
@@ -62,7 +67,29 @@
     };
   })();
 
-  JS_SNAKE.snake = function (){
+  JS_SNAKE.apple = function () {
+    var position = [6, 6];
+
+    function draw(ctx) {
+      ctx.save();
+      ctx.fillStyle = 'lime';
+      ctx.beginPath();
+      var radius = JS_SNAKE.size.block / 2;
+      var x = position[0] * JS_SNAKE.size.block + radius;
+      var y = position[1] * JS_SNAKE.size.block + radius;
+      // x, y, radius, startangle, endangle (radians), clockwise.
+      ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.restore();
+      ctx.restore();
+    }
+
+    return {
+      draw: draw
+    };
+  };
+
+  JS_SNAKE.snake = function () {
     var position = [];
     position.push([6, 4]);
     position.push([5, 4]);
@@ -129,7 +156,7 @@
       draw: draw,
       advance: advance,
       setDirection : setDirection
-    }
+    };
   };
 
   $(document).ready(function() {
