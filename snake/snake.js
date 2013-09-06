@@ -3,6 +3,10 @@
 
   var JS_SNAKE = {};
 
+  JS_SNAKE.equalCoordinates = function (coord1, coord2) {
+    return coord1[0] === coord2[0] && coord1[1] === coord2[1];
+  }
+
   JS_SNAKE.game = (function () {
     var ctx;
     var snake;
@@ -37,7 +41,7 @@
     function loop() {
       // Sets all pixels to black w/ 0 opacity.
       ctx.clearRect(0, 0, JS_SNAKE.size.width,JS_SNAKE.size.height);
-      snake.advance();
+      snake.advance(apple);
       snake.draw(ctx);
       apple.draw(ctx);
       setTimeout(loop, frameInterval);
@@ -84,8 +88,23 @@
       ctx.restore();
     }
 
+    function random(low, high) {
+      return Math.floor(Math.random() * (high - low + 1) + low);
+    }
+
+    function getRandomPosition() {
+      var x = random(1, JS_SNAKE.size.widthInBlocks - 2);
+      var y = random(1, JS_SNAKE.size.heightInBlocks - 2);
+      return [x, y];
+    }
+
+    function getPosition() {
+      return position;
+    }
+
     return {
-      draw: draw
+      draw: draw,
+      getPosition: getPosition
     };
   };
 
@@ -127,7 +146,7 @@
       ctx.restore();
     }
 
-    function advance() {
+    function advance(apple) {
       var nextPosition = position[0].slice();
       direction = nextDirection;
 
@@ -149,7 +168,16 @@
       }
 
       position.unshift(nextPosition);
-      position.pop();
+      if (isEatingApple(position[0], apple)) {
+        $(JS_SNAKE).trigger('appleEaten', [position]);
+      }
+      else {
+        position.pop();
+      }
+    }
+
+    function isEatingApple(head, apple) {
+      return JS_SNAKE.equalCoordinates(head, apple.getPosition());
     }
 
     return {
