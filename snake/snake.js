@@ -25,6 +25,7 @@
     var border;
     var scoreAmount;
 
+    var timeout;
     var frameInterval = 100;
 
     SNAKE.size = {
@@ -66,7 +67,7 @@
         gameOver();
       }
       else {
-        setTimeout(loop, frameInterval);
+        timeout = setTimeout(loop, frameInterval);
       }
     }
 
@@ -86,6 +87,9 @@
           snake.setDirection(direction);
           evt.preventDefault();
         }
+        else if (key === 32) {
+          restart();
+        }
       });
 
       $(SNAKE).bind('appleEaten', function (evt, snakePosition) {
@@ -96,22 +100,30 @@
     }
 
     function gameOver() {
-        ctx.save();
-        ctx.font = 'bold 30px sans-serif';
-        ctx.fillStyle = '#000';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
-        var centreX = SNAKE.size.width / 2;
-        var centreY = SNAKE.size.width / 2;
-        ctx.strokeText('Game Over', centreX, centreY - 10);
-        ctx.fillText('Game Over', centreX, centreY - 10);
-        ctx.font = 'bold 15px sans-serif';
-        ctx.strokeText('Press space to restart', centreX, centreY + 15);
-        ctx.fillText('Press space to restart', centreX, centreY + 15);
-        ctx.restore();
-      }
+      ctx.save();
+      ctx.font = 'bold 30px sans-serif';
+      ctx.fillStyle = '#000';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      var centreX = SNAKE.size.width / 2;
+      var centreY = SNAKE.size.width / 2;
+      ctx.strokeText('Game Over', centreX, centreY - 10);
+      ctx.fillText('Game Over', centreX, centreY - 10);
+      ctx.font = 'bold 15px sans-serif';
+      ctx.strokeText('Press space to restart', centreX, centreY + 15);
+      ctx.fillText('Press space to restart', centreX, centreY + 15);
+      ctx.restore();
+    }
+
+    function restart() {
+      clearTimeout(timeout);
+      $('body').unbind('keydown');
+      $(SNAKE).unbind('appleEaten');
+      $('#js-snake').unbind('click');
+      SNAKE.game.init();
+    }
 
     return {
       init: init
