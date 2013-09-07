@@ -26,7 +26,7 @@
     var scoreAmount;
 
     var timeout;
-    var frameInterval = 100;
+    var frameInterval;
 
     SNAKE.size = {
       width : 300,
@@ -49,6 +49,7 @@
       border = SNAKE.border();
 
       scoreAmount = 0;
+      frameInterval = 100;
 
       command();
       loop();
