@@ -5,9 +5,22 @@
   var renderer = PIXI.autoDetectRenderer(400, 300);
   document.body.appendChild(renderer.view);
 
-  requestAnimFrame(animate);
+  window.requestAnimationFrame(animate);
+
+  var bunny = PIXI.Sprite.fromImage('bunny.png');
+
+  bunny.anchor.x = 0.5;
+  bunny.anchor.y = 0.5;
+  bunny.position.x = 200;
+  bunny.position.y = 150;
+
+  stage.addChild(bunny);
+
   function animate() {
-    requestAnimFrame(animate);
+    window.requestAnimationFrame(animate);
+
+    bunny.rotation += 0.05;
+
     renderer.render(stage);
   }
 
