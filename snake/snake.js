@@ -61,7 +61,13 @@
       apple.draw(ctx);
       score.draw(ctx, scoreAmount);
       border.draw(ctx);
-      setTimeout(loop, frameInterval);
+
+      if (snake.checkCollision()) {
+
+      }
+      else {
+        setTimeout(loop, frameInterval);
+      }
     }
 
     function command() {
@@ -247,6 +253,28 @@
       }
     }
 
+    function checkCollision() {
+        var wallCollision = false;
+        var snakeCollision = false;
+        var head = position[0];
+        var rest = position.slice(1);
+        var snakeX = head[0];
+        var snakeY = head[1];
+        var minX = 1;
+        var minY = 1;
+        var maxX = SNAKE.size.widthInBlocks - 1;
+        var maxY = SNAKE.size.heightInBlocks - 1;
+        var outsideHorizontalBounds = snakeX < minX || snakeX >= maxX;
+        var outsideVerticalBounds = snakeY < minY || snakeY >= maxY;
+
+        if (outsideHorizontalBounds || outsideVerticalBounds) {
+          wallCollision = true;
+        }
+
+        snakeCollision = SNAKE.checkCoordinateInArray(head, rest);
+        return wallCollision || snakeCollision;
+      }
+
     function isEatingApple(head, apple) {
       return SNAKE.equalCoordinates(head, apple.getPosition());
     }
@@ -254,7 +282,8 @@
     return {
       draw: draw,
       advance: advance,
-      setDirection : setDirection
+      setDirection : setDirection,
+      checkCollision : checkCollision
     };
   };
 
