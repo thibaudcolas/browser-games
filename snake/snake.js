@@ -30,7 +30,7 @@
     SNAKE.size = {
       width : 300,
       height: 300,
-      block : 20
+      block : 10
     };
     SNAKE.size.widthInBlocks = SNAKE.size.width / SNAKE.size.block;
     SNAKE.size.heightInBlocks = SNAKE.size.height / SNAKE.size.block;
@@ -59,11 +59,11 @@
       snake.advance(apple);
       snake.draw(ctx);
       apple.draw(ctx);
-      score.draw(ctx, scoreAmount);
       border.draw(ctx);
+      score.draw(ctx, scoreAmount);
 
       if (snake.checkCollision()) {
-
+        gameOver();
       }
       else {
         setTimeout(loop, frameInterval);
@@ -95,6 +95,24 @@
       });
     }
 
+    function gameOver() {
+        ctx.save();
+        ctx.font = 'bold 30px sans-serif';
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        var centreX = SNAKE.size.width / 2;
+        var centreY = SNAKE.size.width / 2;
+        ctx.strokeText('Game Over', centreX, centreY - 10);
+        ctx.fillText('Game Over', centreX, centreY - 10);
+        ctx.font = 'bold 15px sans-serif';
+        ctx.strokeText('Press space to restart', centreX, centreY + 15);
+        ctx.fillText('Press space to restart', centreX, centreY + 15);
+        ctx.restore();
+      }
+
     return {
       init: init
     };
@@ -104,7 +122,7 @@
     function draw(ctx) {
       ctx.save();
       ctx.strokeStyle = 'gray';
-      ctx.lineWidth = SNAKE.size.block / 4;
+      ctx.lineWidth = SNAKE.size.block;
       ctx.lineCap = 'square';
       var offset = ctx.lineWidth / 2;
       var corners = [
@@ -288,6 +306,7 @@
   };
 
   $(document).ready(function() {
+
     SNAKE.game.init();
   });
 
