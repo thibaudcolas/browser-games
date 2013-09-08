@@ -5,6 +5,53 @@
   var renderer = PIXI.autoDetectRenderer(500, 500);
   document.body.appendChild(renderer.view);
 
+  var loader = new PIXI.AssetLoader(["aliens.json", "boom.json"]);
+
+  var alienContainer = new PIXI.DisplayObjectContainer();
+  alienContainer.position.x = 300;
+  alienContainer.position.y = 100;
+  stage.addChild(alienContainer);
+
+  loader.onComplete = function () {
+    var alienFrames = ["eggHead.png", "flowerTop.png"];
+
+    for(var i = 0; i < 2; i++) {
+      var alien = PIXI.Sprite.fromFrame(alienFrames[i]);
+
+      alien.position.x = Math.random() * 200;
+      alien.position.y = Math.random() * 200;
+      alien.rotation = Math.random() * 100;
+      alien.anchor.x = 0.5;
+      alien.anchor.y = 0.5;
+      alienContainer.addChild(alien);
+    }
+
+    var explosionTextures = [];
+
+    for(var i = 0; i < 26; i++) {
+      var texture = PIXI.Texture.fromFrame("explosion-" + (i + 1) + ".png");
+      explosionTextures.push(texture);
+    }
+
+    for(var i = 0; i < 10; i++) {
+      var explosion = new PIXI.MovieClip(explosionTextures);
+
+
+      explosion.position.x = Math.random() * 800;
+      explosion.position.y = Math.random() * 600;
+      explosion.anchor.x = 0.5;
+      explosion.anchor.y = 0.5;
+
+      explosion.rotation = Math.random() * Math.PI;
+      explosion.scale.x = explosion.scale.y = 0.75 + Math.random() * 0.5
+
+      explosion.gotoAndPlay(Math.random() * 27);
+
+      stage.addChild(explosion);
+    }
+  };
+  loader.load();
+
   var texture = PIXI.Texture.fromImage('bunny.png');
   var bunny = new PIXI.Sprite(texture);
 
@@ -20,29 +67,6 @@
   bunny.scale.y = 2;
 
   stage.addChild(bunny);
-
-  var loader = new PIXI.AssetLoader(["aliens.json"]);
-
-  var alienContainer = new PIXI.DisplayObjectContainer();
-  alienContainer.position.x = 300;
-  alienContainer.position.y = 100;
-  stage.addChild(alienContainer);
-
-  loader.onComplete = function () {
-    var alienFrames = ["eggHead.png", "flowerTop.png"];
-
-    for (var i = 0; i < 2; i++) {
-      var alien = PIXI.Sprite.fromFrame(alienFrames[i]);
-
-      alien.position.x = Math.random() * 200;
-      alien.position.y = Math.random() * 200;
-      alien.rotation = Math.random() * 100;
-      alien.anchor.x = 0.5;
-      alien.anchor.y = 0.5;
-      alienContainer.addChild(alien);
-    }
-  };
-  loader.load();
 
   window.requestAnimationFrame(animate);
 
