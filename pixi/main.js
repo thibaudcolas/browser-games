@@ -10,6 +10,8 @@
   var texture = PIXI.Texture.fromImage('bunny.png');
   var bunny = new PIXI.Sprite(texture);
 
+  var direction = 1;
+
   bunny.anchor.x = 0.5;
   bunny.anchor.y = 0.5;
   bunny.position.x = 50;
@@ -20,9 +22,11 @@
   function animate() {
     window.requestAnimationFrame(animate);
 
-    bunny.rotation -= 0.05;
+    direction = backAndForth(0, bunny.position.x, 400);
 
-    bunny.position.x += backAndForth(0, bunny.position.x, 400);
+    bunny.rotation += direction * 0.05;
+
+    bunny.position.x += direction * 1;
 
     renderer.render(stage);
   }
