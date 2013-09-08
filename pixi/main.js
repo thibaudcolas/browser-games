@@ -10,6 +10,7 @@
 
   var direction = 1;
   var scale = 0;
+  var forth = true;
 
   bunny.anchor.x = 0.5;
   bunny.anchor.y = 0.5;
@@ -22,18 +23,18 @@
 
   var aliens = [];
   var alienContainer = new PIXI.DisplayObjectContainer();
-  alienContainer.position.x = 300;
+  alienContainer.position.x = 100;
   alienContainer.position.y = 100;
   stage.addChild(alienContainer);
 
   loader.onComplete = function () {
-    var alienFrames = ["eggHead.png", "flowerTop.png", "helmlok.png", "skully.png"];
+    var alienFrames = ["eggHead.png", "flowerTop.png"];
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 2; i++) {
       var alien = PIXI.Sprite.fromFrame(alienFrames[i]);
 
       alien.position.x = Math.random() * 300;
-      alien.position.y = Math.random() * 200;
+      alien.position.y = Math.random() * 300;
       alien.anchor.x = 0.5;
       alien.anchor.y = 0.5;
       aliens.push(alien);
@@ -47,13 +48,12 @@
   function animate() {
     window.requestAnimationFrame(animate);
 
-    direction = backAndForth(0, bunny.position.x, 400);
+    direction = backAndForth(0, bunny.position.x, 400, 25);
     bunny.rotation += direction * 0.05;
     bunny.position.x += direction * 1;
 
-    for (var i = 0; i < 4; i++) {
-      var alien = aliens[i];
-      alien.rotation += 0.1;
+    for (var i = 0; i < 2; i++) {
+      aliens[i].rotation += 0.1;
     }
 
     scale += 0.01;
@@ -64,11 +64,11 @@
     renderer.render(stage);
   }
 
+  function backAndForth(lowest, current, highest, threshold) {
+    forth = forth && current < highest - threshold || current < lowest + threshold;
+    return forth ? 1 : -1;
+  }
+
 })(window.PIXI);
 
-function backAndForth(lowest, current, highest) {
-  var threshold = 25;
-  this.forth = (typeof this.forth === 'undefined') ? true : this.forth;
-  this.forth = this.forth && current < highest - threshold || current < lowest + threshold;
-  return this.forth ? 1 : -1;
-}
+
