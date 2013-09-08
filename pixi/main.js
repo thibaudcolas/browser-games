@@ -16,14 +16,15 @@
   bunny.anchor.y = 0.5;
   bunny.position.x = 50;
   bunny.position.y = 50;
+  bunny.scale.x = 2;
+  bunny.scale.y = 2;
 
   stage.addChild(bunny);
 
-  var loader = new PIXI.AssetLoader([ "SpriteSheet.json"]);
+  var loader = new PIXI.AssetLoader(["aliens.json"]);
 
-  var aliens = [];
   var alienContainer = new PIXI.DisplayObjectContainer();
-  alienContainer.position.x = 100;
+  alienContainer.position.x = 300;
   alienContainer.position.y = 100;
   stage.addChild(alienContainer);
 
@@ -33,11 +34,11 @@
     for (var i = 0; i < 2; i++) {
       var alien = PIXI.Sprite.fromFrame(alienFrames[i]);
 
-      alien.position.x = Math.random() * 300;
-      alien.position.y = Math.random() * 300;
+      alien.position.x = Math.random() * 200;
+      alien.position.y = Math.random() * 200;
+      alien.rotation = Math.random() * 100;
       alien.anchor.x = 0.5;
       alien.anchor.y = 0.5;
-      aliens.push(alien);
       alienContainer.addChild(alien);
     }
   };
@@ -48,13 +49,9 @@
   function animate() {
     window.requestAnimationFrame(animate);
 
-    direction = backAndForth(0, bunny.position.x, 400, 25);
+    direction = backAndForth(0, bunny.position.x, 500, 50);
     bunny.rotation += direction * 0.05;
     bunny.position.x += direction * 1;
-
-    for (var i = 0; i < 2; i++) {
-      aliens[i].rotation += 0.1;
-    }
 
     scale += 0.01;
     alienContainer.scale.x = Math.sin(scale);
