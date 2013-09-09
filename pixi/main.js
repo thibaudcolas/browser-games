@@ -14,12 +14,13 @@
 
   loader.onComplete = function () {
     var alienFrames = ["eggHead.png", "flowerTop.png"];
+    var i;
 
-    for(var i = 0; i < 2; i++) {
+    for(i = 0; i < 2; i++) {
       var alien = PIXI.Sprite.fromFrame(alienFrames[i]);
 
-      alien.position.x = Math.random() * 200;
-      alien.position.y = Math.random() * 200;
+      alien.position.x = Math.random() * 100 + i * 200;
+      alien.position.y = Math.random() * 100;
       alien.rotation = Math.random() * 100;
       alien.anchor.x = 0.5;
       alien.anchor.y = 0.5;
@@ -28,14 +29,13 @@
 
     var explosionTextures = [];
 
-    for(var i = 0; i < 26; i++) {
+    for(i = 0; i < 26; i++) {
       var texture = PIXI.Texture.fromFrame("explosion-" + (i + 1) + ".png");
       explosionTextures.push(texture);
     }
 
-    for(var i = 0; i < 10; i++) {
+    for(i = 0; i < 10; i++) {
       var explosion = new PIXI.MovieClip(explosionTextures);
-
 
       explosion.position.x = Math.random() * 800;
       explosion.position.y = Math.random() * 600;
