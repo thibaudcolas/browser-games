@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  var letter = Math.random().toString(36).slice(-1);
+
   var c = document.getElementById('js-paint');
   var cx = c.getContext('2d');
   c.height = 480;
@@ -8,14 +10,22 @@
   cx.lineWidth = 20;
   cx.lineCap = 'round';
   cx.strokeStyle = 'rgb(30, 30, 60)';
+  cx.font = 'bold 350px helvetica';
+  cx.fillStyle = 'rgb(255, 0, 0)';
+  cx.textBaseline = 'middle';
+  var center = {
+    x: (c.width - cx.measureText(letter).width) / 2,
+    y: c.height / 2
+  };
+  cx.fillText(letter, center.x, center.y);
   var mouseDown = false;
   var lastPosition = {
     x: null,
     y: null
   };
 
-  function isOnCanvas(pos) {
-    return pos.x > 0 && pos.y > 0 && pos.x <= c.width && pos.y <= c.height;
+  function isOnCanvas(p) {
+    return 0 < p.x && p.x <= c.width && 0 < p.y && p.y <= c.height;
   }
 
   function paint(x, y) {
@@ -44,7 +54,7 @@
     lastPosition.y = e.clientY;
   });
 
-  // Prevents long trails when the mouse wanders outside of canvas.
+// Prevents long trails when the mouse wanders outside of canvas.
   document.addEventListener('mousemove', function (e) {
     var position = {
       x: e.clientX,
@@ -56,3 +66,5 @@
     }
   })
 })();
+
+
