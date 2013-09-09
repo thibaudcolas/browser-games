@@ -8,31 +8,41 @@
   cx.lineWidth = 20;
   cx.lineCap = 'round';
   cx.strokeStyle = 'rgb(30, 30, 60)';
-  var mousedown = false;
+  var mouseDown = false;
+  var lastPosition = {
+    x: null,
+    y: null
+  };
 
-  function onmousedown(e) {
-    mousedown = true;
+  function onMouseDown(e) {
+    mouseDown = true;
     e.preventDefault();
   }
 
-  function onmouseup(e) {
-    mousedown = false;
+  function onMouseUp(e) {
+    mouseDown = false;
     e.preventDefault();
   }
 
-  function onmousemove(e) {
-    if (mousedown) paint(e.clientX, e.clientY);
+  function onMouseMove(e) {
+    if (mouseDown) {
+      paint(e.clientX, e.clientY);
+    }
+    lastPosition.x = e.clientX;
+    lastPosition.y = e.clientY;
   }
 
   function paint(x, y) {
     cx.beginPath();
-    cx.moveTo(x, y);
+    if (lastPosition.x > 0) {
+      cx.moveTo(lastPosition.x, lastPosition.y);
+    }
     cx.lineTo(x, y);
     cx.stroke();
     cx.closePath();
   }
 
-  c.addEventListener('mouseup', onmouseup);
-  c.addEventListener('mousedown', onmousedown);
-  c.addEventListener('mousemove', onmousemove);
+  c.addEventListener('mouseup', onMouseUp);
+  c.addEventListener('mousedown', onMouseDown);
+  c.addEventListener('mousemove', onMouseMove);
 })();
