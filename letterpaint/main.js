@@ -7,12 +7,21 @@
   c.width = 320;
   cx.lineWidth = 20;
   cx.lineCap = 'round';
-  cx.strokeStyle = 'rgb(0, 0, 50)';
+  cx.strokeStyle = 'rgb(30, 30, 60)';
+  var mousedown = false;
 
-  function onmousemove(ev) {
-    var x = ev.clientX;
-    var y = ev.clientY;
-    paint(x, y);
+  function onmousedown(e) {
+    mousedown = true;
+    e.preventDefault();
+  }
+
+  function onmouseup(e) {
+    mousedown = false;
+    e.preventDefault();
+  }
+
+  function onmousemove(e) {
+    if (mousedown) paint(e.clientX, e.clientY);
   }
 
   function paint(x, y) {
@@ -23,5 +32,7 @@
     cx.closePath();
   }
 
-  c.addEventListener('mousemove', onmousemove, false);
+  c.addEventListener('mouseup', onmouseup);
+  c.addEventListener('mousedown', onmousedown);
+  c.addEventListener('mousemove', onmousemove);
 })();
