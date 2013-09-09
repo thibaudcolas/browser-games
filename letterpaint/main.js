@@ -14,27 +14,13 @@
     y: null
   };
 
-  function onMouseDown(e) {
-    mouseDown = true;
-    e.preventDefault();
-  }
-
-  function onMouseUp(e) {
-    mouseDown = false;
-    e.preventDefault();
-  }
-
-  function onMouseMove(e) {
-    if (mouseDown) {
-      paint(e.clientX, e.clientY);
-    }
-    lastPosition.x = e.clientX;
-    lastPosition.y = e.clientY;
+  function isOnCanvas(pos) {
+    return pos.x > 0 && pos.y > 0 && pos.x <= c.width && pos.y <= c.height;
   }
 
   function paint(x, y) {
     cx.beginPath();
-    if (lastPosition.x > 0) {
+    if (isOnCanvas(lastPosition)) {
       cx.moveTo(lastPosition.x, lastPosition.y);
     }
     cx.lineTo(x, y);
@@ -42,7 +28,31 @@
     cx.closePath();
   }
 
-  c.addEventListener('mouseup', onMouseUp);
-  c.addEventListener('mousedown', onMouseDown);
-  c.addEventListener('mousemove', onMouseMove);
+  c.addEventListener('mouseup', function (e) {
+    mouseDown = false;
+    e.preventDefault();
+  });
+  c.addEventListener('mousedown', function (e) {
+    mouseDown = true;
+    e.preventDefault();
+  });
+  c.addEventListener('mousemove', function (e) {
+    if (mouseDown) {
+      paint(e.clientX, e.clientY);
+    }
+    lastPosition.x = e.clientX;
+    lastPosition.y = e.clientY;
+  });
+
+  // Prevents long trails when the mouse wanders outside of canvas.
+  document.addEventListener('mousemove', function (e) {
+    var position = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    if (!isOnCanvas(position)) {
+      lastPosition.x = null;
+      lastPosition.y = null;
+    }
+  })
 })();
