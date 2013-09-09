@@ -9,8 +9,14 @@
   c.width = 320;
   cx.lineWidth = 20;
   cx.lineCap = 'round';
-  cx.strokeStyle = 'rgb(30, 30, 60)';
-  cx.font = 'bold 350px helvetica';
+  var strokeColor = {
+    r: 30,
+    g: 30,
+    b: 60,
+    a: 1
+  };
+  cx.strokeStyle = 'rgba(' + strokeColor.r + ', ' + strokeColor.g + ', ' + strokeColor.b + ', ' + strokeColor.a + ')';
+  cx.font = 'bold 300px helvetica';
   var letterColor = {
     r: 200,
     g: 30,
@@ -31,6 +37,19 @@
   };
 
   var pixels = cx.getImageData(0, 0, c.width, c.height);
+  var letterAmount = getColorAmount(letterColor);
+
+  function getColorAmount(color) {
+    var pixels = cx.getImageData(0, 0, c.width, c.height);
+    var all = pixels.data.length;
+    var amount = 0;
+    for (var i = 0; i < all; i += 4) {
+      if (pixels.data[i] === color.r && pixels.data[i + 1] === color.g && pixels.data[i + 2] === color.b) {
+        amount++;
+      }
+    }
+    return amount;
+  };
 
   function getPointColor(x, y) {
     // 4 cells per point, all in a one-dimension array.
@@ -41,6 +60,11 @@
       b: pixels.data[i + 2],
       a: pixels.data[i + 3]
     };
+  }
+
+  function isCompleted() {
+    var strokeAmount = getColorAmount(strokeColor);
+    return strokeAmount * 2.5 > letterAmount;
   }
 
   function isOnLetter(x, y) {
@@ -62,39 +86,43 @@
       cx.stroke();
       cx.closePath();
     }
-  else {
+    else {
+      mouseDown = false;
+      alert(':(');
+    }
+  }
+
+  c.addEventListener('mouseup', function (e) {
     mouseDown = false;
-    alert(':(');
-  }
-}
+    if (isCompleted()) {
+      alert(':)');
+    }
+    e.preventDefault();
+  });
+  c.addEventListener('mousedown', function (e) {
+    mouseDown = true;
+    e.preventDefault();
+  });
+  c.addEventListener('mousemove', function (e) {
+    if (mouseDown) {
+      paint(e.clientX, e.clientY);
+    }
+    lastPosition.x = e.clientX;
+    lastPosition.y = e.clientY;
+  });
 
-c.addEventListener('mouseup', function (e) {
-  mouseDown = false;
-  e.preventDefault();
-});
-c.addEventListener('mousedown', function (e) {
-  mouseDown = true;
-  e.preventDefault();
-});
-c.addEventListener('mousemove', function (e) {
-  if (mouseDown) {
-    paint(e.clientX, e.clientY);
-  }
-  lastPosition.x = e.clientX;
-  lastPosition.y = e.clientY;
-});
+  // Prevents long trails when the mouse wanders outside of canvas.
+  document.addEventListener('mousemove', function (e) {
+    var position = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    if (!isOnCanvas(position)) {
+      lastPosition.x = null;
+      lastPosition.y = null;
+    }
+  });
 
-// Prevents long trails when the mouse wanders outside of canvas.
-document.addEventListener('mousemove', function (e) {
-  var position = {
-    x: e.clientX,
-    y: e.clientY
-  };
-  if (!isOnCanvas(position)) {
-    lastPosition.x = null;
-    lastPosition.y = null;
-  }
-});
 })();
 
 
