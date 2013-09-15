@@ -36,46 +36,98 @@
   };
 
   Entity.prototype.update = function(dt) {
+    var movingLeft = this.dx < 0;
+    var movingRight = this.dx > 0;
 
+    this.ddx = 0;
+
+    var drag = this.falling ? 0.8 : 1;
+
+    // Accel / friction to the left.
+    if (this.left) {
+      this.ddx -= this.accel * drag;
+    }
+    else if (movingLeft) {
+      this.ddx += this.friction * drag;
+    }
+
+    // Accel / friction to the right.
+    if (this.right) {
+      this.ddx += this.accel * drag;
+    }
+    else if (movingRight) {
+      this.ddx -= this.friction * drag;
+    }
+
+    // Gravity.
     this.ddy = this.gravity;
 
+    // Jump impulse.
     if (this.jump && !this.jumping && !this.falling) {
       this.ddy -= this.impulse;
       this.jumping = true;
     }
 
+    // Actual movement.
+    this.x += dt * this.dx;
     this.y += dt * this.dy;
+    this.dx += limit(-this.maxdx, dt * this.ddx, this.maxdx);
     this.dy += limit(-this.maxdy, dt * this.ddy, this.maxdy);
 
-    var tx        = pixelToTile(this.x),
-        ty        = pixelToTile(this.y),
-        nx        = this.x % MAP.tile,
-        ny        = this.y % MAP.tile,
-        cell      = getCellData(tx,     ty),
-        cellright = getCellData(tx + 1, ty),
-        celldown  = getCellData(tx,     ty + 1),
-        celldiag  = getCellData(tx + 1, ty + 1);
+    // Lag when changing direction.
+    if ((movingLeft  && this.dx > 0) || (movingRight && this.dx < 0)) {
+      this.dx = 0;
+    }
 
-    if (this.dy > 0) {
+    var tileX        = pixelToTile(this.x);
+    var tileY        = pixelToTile(this.y);
+    var nx        = this.x % MAP.tile;
+    var ny        = this.y % MAP.tile;
+    var cell      = getCellData(tileX,     tileY);
+    var cellright = getCellData(tileX + 1, tileY);
+    var celldown  = getCellData(tileX,     tileY + 1);
+    var celldiag  = getCellData(tileX + 1, tileY + 1);
+
+    if (this.dx > 0) {
+      if ((cellright && !cell) ||
+          (celldiag  && !celldown && ny)) {
+        this.x = tileToPixel(tileX);
+        this.dx = 0;
+      }
+    }
+    else if (this.dx < 0) {
+      if ((cell     && !cellright) ||
+          (celldown && !celldiag && ny)) {
+        this.x = tileToPixel(tileX + 1);
+        this.dx = 0;
+      }
+    }
+
+    var movingUp = this.dy < 0;
+    var movingDown = this.dy > 0;
+
+    if (movingDown) {
       if ((celldown && !cell) ||
           (celldiag && !cellright && nx)) {
-        this.y = tileToPixel(ty);
+        this.y = tileToPixel(tileY);
         this.dy = 0;
         this.falling = false;
         this.jumping = false;
         ny = 0;
       }
     }
-    else if (this.dy < 0) {
+    else if (movingUp) {
       if ((cell      && !celldown) ||
           (cellright && !celldiag && nx)) {
-        this.y = tileToPixel(ty + 1);
+        this.y = tileToPixel(tileY + 1);
         this.dy = 0;
         cell      = celldown;
         cellright = celldiag;
         ny        = 0;
       }
     }
+
+    this.falling = !(celldown || (nx && celldiag));
   };
 
   window.GAME.Entity = Entity;
