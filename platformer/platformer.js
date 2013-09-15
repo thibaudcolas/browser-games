@@ -51,6 +51,7 @@
   var counter  = 0;
 
   var player = {};
+  var treasures = [];
 
   var keys = {
     space : 32,
@@ -105,6 +106,9 @@
       if (objects[i].type === 'player') {
         player = new Entity(objects[i]);
       }
+      else if (objects[i].type === 'treasure') {
+        treasures.push(new Entity(objects[i]));
+      }
     }
   }
 
@@ -134,6 +138,13 @@
     ctx.fillRect(player.x + (player.dx * dt), player.y + (player.dy * dt), MAP.tile, MAP.tile);
   }
 
+  function renderTreasure(ctx, frame) {
+    ctx.fillStyle = palette.gold;
+    for(var i = 0; i < treasures.length; i++) {
+      ctx.fillRect(treasures[i].x, treasures[i].y + MAP.tile / 3, MAP.tile, MAP.tile * (2 / 3));
+    }
+  }
+
   /**
    * Main functions.
    */
@@ -145,6 +156,7 @@
   function render(ctx, frame, dt) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderMap(ctx);
+    renderTreasure(ctx, frame);
     renderPlayer(ctx, dt);
   }
 
