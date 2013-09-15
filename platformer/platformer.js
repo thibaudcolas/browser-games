@@ -1,34 +1,41 @@
 (function () {
   'use strict';
 
-  var GAME = {};
+  // https://developer.mozilla.org/en-US/docs/Web/API/Performance.now%28%29
+  function timestamp() {
+    return window.performance && window.performance.now ? window.performance.now() : Date.now();
+  }
 
-  GAME.map = {
-    tile: 32,
-    tileWidth: 64,
-    tileHeight: 48,
+  /**
+   * Variables.
+   */
+
+  var map = {
+    tile       : 32,
+    tileWidth  : 64,
+    tileHeight : 48,
   };
 
-  GAME.width  = GAME.map.tileWidth * GAME.map.tile;
-  GAME.height = GAME.map.tileHeight * GAME.map.tile;
+  var canvas = document.getElementById('js-platformer');
+  var ctx    = canvas.getContext('2d');
 
-  GAME.canvas = document.getElementById('js-platformer');
-  GAME.ctx    = GAME.canvas.getContext('2d');
+  canvas.width  = map.tileWidth * map.tile;
+  canvas.height = map.tileHeight * map.tile;
 
-  GAME.canvas.width  = GAME.width;
-  GAME.canvas.height = GAME.height;
+  var time = {
+    counter : 0,
+    dt      : 0,
+    now     : null,
+    last    : timestamp(),
+  };
 
-  function render(ctx, frame, dt) {
-    ctx.clearRect(0, 0, GAME.map.width, GAME.map.height);
-  }
+  var fps      = 60;
+  var step     = 1 / fps;
+  var counter  = 0;
 
-  function setup(map) {
-    console.dir(map);
-  }
-
-  function frame() {
-    requestAnimationFrame(frame, GAME.canvas);
-  }
+  /**
+   * Setup functions.
+   */
 
   function get(url, onsuccess) {
     var request = new XMLHttpRequest();
@@ -40,6 +47,38 @@
     request.open('GET', url, true);
     request.send();
   }
+
+  function setup(map) {
+    console.dir(map);
+  }
+
+  /**
+   * Main functions.
+   */
+
+  function update(step) {
+  }
+
+  function render(ctx, frame, dt) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function frame() {
+    time.now = timestamp();
+    time.dt += Math.min(1, (time.now - time.last) / 1000);
+    while (time.dt > step) {
+      time.dt -= step;
+      update(step);
+    }
+    render(ctx, counter, time.dt);
+    time.last = time.now;
+    counter++;
+    requestAnimationFrame(frame, canvas);
+  }
+
+  /**
+   * Go!
+   */
 
   get('level.json', function (req) {
     setup(JSON.parse(req.responseText));

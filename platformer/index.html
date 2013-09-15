@@ -6,22 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>JS Platformer</title>
     <style type="text/css" media="screen">
-      body {
+      * {
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
+      }
+      html, body {
         background-color: #ccc;
         padding: 0;
-        margin: 5px;
+        margin: 0;
+        height: 100%;
+        width: 100%;
       }
       canvas {
         background-color: white;
-        width: 512px;
-        height: 384px;
-        font-size: 7pt;
+        width: 1024px;
+        height: 768px;
+        font-size: 15pt;
+        padding: 0;
+        margin: 0;
       }
     </style>
   </head>
   <body>
     <canvas id="js-platformer"></canvas>
-
     <script src="raf-polyfill.js"></script>
     <script src="platformer.js"></script>
   </body>
