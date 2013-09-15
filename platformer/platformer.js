@@ -1,13 +1,11 @@
-(function (MAP, Entity) {
+(function (cells, MAP, Entity) {
   'use strict';
+
+  var getCellData = window.GAME.fn.getCellData;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Performance.now%28%29
   function timestamp() {
     return window.performance && window.performance.now ? window.performance.now() : Date.now();
-  }
-
-  function limit(min, x, max) {
-    return Math.max(min, Math.min(max, x));
   }
 
   /**
@@ -52,7 +50,6 @@
   var step     = 1 / fps;
   var counter  = 0;
 
-  var tiles  = [];
   var player = {};
 
   var keys = {
@@ -61,23 +58,6 @@
     up    : 38,
     right : 39,
     down  : 40
-  };
-
-  /**
-   * Converter functions.
-   */
-
-  // Returns the cell data for a given point.
-  function getCellData(tx, ty) {
-   return tiles[tx + (ty * MAP.tileWidth)];
-  }
-
-  function pixelToTile(p) {
-    return Math.floor(p / MAP.tile);
-  };
-
-  function tileToPixel(t) {
-    return t * MAP.tile;
   };
 
   /**
@@ -106,18 +86,24 @@
         player.right = isActive;
         evt.preventDefault();
         return false;
+
+      case keys.up:
+      case keys.space:
+        player.jump = isActive;
+        evt.preventDefault();
+        return false;
     }
   }
 
   function setup(map) {
-    tiles = map.layers[0].data;
+    window.GAME.cells = map.layers[0].data;
+    cells = map.layers[0].data;
 
     var objects = map.layers[1].objects;
 
     for (var i = 0; i <objects.length; i++) {
       if (objects[i].type === 'player') {
         player = new Entity(objects[i]);
-        console.dir(player);
       }
     }
   }
@@ -191,4 +177,4 @@
     return onkey(evt, evt.keyCode, false);
   }, false);
 
-})(window.GAME.MAP, window.GAME.Entity);
+})(window.GAME.cells, window.GAME.MAP, window.GAME.Entity);
