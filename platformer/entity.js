@@ -38,6 +38,12 @@
   Entity.prototype.update = function(dt) {
 
     this.ddy = this.gravity;
+
+    if (this.jump && !this.jumping && !this.falling) {
+      this.ddy -= this.impulse;
+      this.jumping = true;
+    }
+
     this.y += dt * this.dy;
     this.dy += limit(-this.maxdy, dt * this.ddy, this.maxdy);
 
