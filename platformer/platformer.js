@@ -8,6 +8,12 @@
     return window.performance && window.performance.now ? window.performance.now() : Date.now();
   }
 
+  function glow(frame, duration) {
+    var half  = duration / 2;
+    var pulse = frame % duration;
+    return pulse < half ? pulse / half : 1 - (pulse - half) / half;
+  }
+
   /**
    * Parameters.
    */
@@ -140,9 +146,11 @@
 
   function renderTreasure(ctx, frame) {
     ctx.fillStyle = palette.gold;
+    ctx.globalAlpha = 0.25 + glow(frame, 60);
     for(var i = 0; i < treasures.length; i++) {
       ctx.fillRect(treasures[i].x, treasures[i].y + MAP.tile / 3, MAP.tile, MAP.tile * (2 / 3));
     }
+    ctx.globalAlpha = 1;
   }
 
   /**

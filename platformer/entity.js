@@ -29,7 +29,6 @@
     this.impulse     = MAP.tile * (raw.properties.impulse || defaults.impulse);
     this.accel       = this.maxdx / (raw.properties.accel    || defaults.accel);
     this.friction    = this.maxdx / (raw.properties.friction || defaults.friction);
-    this.isPlayer    = raw.type === 'player';
     this.left        = raw.properties.left;
     this.right       = raw.properties.right;
     this.jump        = false;
