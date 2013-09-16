@@ -32,6 +32,7 @@
     this.left        = raw.properties.left;
     this.right       = raw.properties.right;
     this.jump        = false;
+    this.collected   = 0;
   };
 
   Entity.prototype.update = function(dt) {
@@ -127,6 +128,20 @@
     }
 
     this.falling = !(celldown || (nx && celldiag));
+  };
+
+  Entity.prototype.overlap = function (obj, area) {
+    var overlapping = !(
+      (this.x + area - 1) < obj.x  ||
+      (obj.x  + area - 1) < this.x ||
+      (this.y + area - 1) < obj.y  ||
+      (obj.y  + area - 1) < this.y
+    );
+    return overlapping;
+  };
+
+  Entity.prototype.collect = function () {
+    this.collected++;
   };
 
   window.GAME.Entity = Entity;

@@ -2,6 +2,7 @@
   'use strict';
 
   var getCellData = window.GAME.fn.getCellData;
+  var tileToPixel = window.GAME.fn.tileToPixel;
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Performance.now%28%29
   function timestamp() {
@@ -122,6 +123,15 @@
    * Update functions.
    */
 
+  function updateTreasure() {
+    for (var i = 0; i < treasures.length; i++) {
+      if (player.overlap(treasures[i], MAP.tile)) {
+        player.collect();
+        treasures.splice(i, 1);
+      }
+    }
+  }
+
   /**
    * Render functions.
    */
@@ -159,6 +169,7 @@
 
   function update(dt) {
     player.update(dt);
+    updateTreasure();
   }
 
   function render(ctx, frame, dt) {
