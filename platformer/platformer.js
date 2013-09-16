@@ -152,6 +152,11 @@
   function renderPlayer(ctx, dt) {
     ctx.fillStyle = palette.yellow;
     ctx.fillRect(player.x + (player.dx * dt), player.y + (player.dy * dt), MAP.tile, MAP.tile);
+
+    ctx.fillStyle = palette.gold;
+    for(var i = 0; i < player.collected ; i++) {
+      ctx.fillRect(tileToPixel(2 + i), tileToPixel(2), MAP.tile / 2, MAP.tile / 2);
+    }
   }
 
   function renderTreasure(ctx, frame) {
