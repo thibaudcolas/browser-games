@@ -177,6 +177,11 @@
     for(var i = 0; i < player.collected ; i++) {
       ctx.fillRect(tileToPixel(2 + i), tileToPixel(2), MAP.tile / 2, MAP.tile / 2);
     }
+
+    ctx.fillStyle = palette.slate;
+    for(var i = 0; i < player.killed ; i++) {
+      ctx.fillRect(tileToPixel(2 + i), tileToPixel(3), MAP.tile / 2, MAP.tile / 2);
+    }
   }
 
   function renderTreasure(ctx, frame) {
