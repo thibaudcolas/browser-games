@@ -113,7 +113,9 @@
     for (var i = 0; i <objects.length; i++) {
       switch (objects[i].type) {
         case 'player':
-          player = new Entity(objects[i]); break;
+          player = new Entity(objects[i]);
+          player.isPlayable = true;
+          break;
         case 'treasure':
           treasures.push(new Entity(objects[i])); break;
         case 'monster':
@@ -138,11 +140,13 @@
   }
 
   function updateMonsters(dt) {
+    var m = null;
     for (var i = 0; i < monsters.length; i++) {
-      monsters[i].update(dt);
-      if (player.overlap(monsters[i], MAP.tile)) {
-        if (player.dy > 0 && monsters[i].y - player.y > MAP.tile / 2) {
-          player.kill(monsters[i]);
+      m = monsters[i];
+      m.update(dt);
+      if (player.overlap(m, MAP.tile)) {
+        if (player.dy > 0 && m.y - player.y > MAP.tile / 2) {
+          player.kill(m);
           monsters.splice(i, 1);
         }
         else {

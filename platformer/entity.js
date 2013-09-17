@@ -32,6 +32,7 @@
     this.left        = raw.properties.left;
     this.right       = raw.properties.right;
     this.jump        = false;
+    this.isPlayable  = false;
     this.collected   = 0;
     this.killed      = 0;
     this.start = {
@@ -129,6 +130,17 @@
         cell      = celldown;
         cellright = celldiag;
         ny        = 0;
+      }
+    }
+
+    if (!this.isPlayable) {
+      if (this.left && (cell || !celldown)) {
+        this.left = false;
+        this.right = true;
+      }
+      else if (this.right && (cellright || !celldiag)) {
+        this.right = false;
+        this.left  = true;
       }
     }
 
