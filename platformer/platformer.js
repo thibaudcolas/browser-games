@@ -128,11 +128,26 @@
    * Update functions.
    */
 
-  function updateTreasure() {
+  function updateTreasures(ft) {
     for (var i = 0; i < treasures.length; i++) {
       if (player.overlap(treasures[i], MAP.tile)) {
         player.collect();
         treasures.splice(i, 1);
+      }
+    }
+  }
+
+  function updateMonsters(dt) {
+    for (var i = 0; i < monsters.length; i++) {
+      monsters[i].update(dt);
+      if (player.overlap(monsters[i], MAP.tile)) {
+        if (player.dy > 0 && monsters[i].y - player.y > MAP.tile / 2) {
+          player.kill(monsters[i]);
+          monsters.splice(i, 1);
+        }
+        else {
+          player.die(true);
+        }
       }
     }
   }
@@ -186,7 +201,8 @@
 
   function update(dt) {
     player.update(dt);
-    updateTreasure();
+    updateTreasures(dt);
+    updateMonsters(dt);
   }
 
   function render(ctx, frame, dt) {

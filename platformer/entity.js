@@ -40,7 +40,7 @@
     };
   };
 
-  Entity.prototype.update = function(dt) {
+  Entity.prototype.update = function (dt) {
     var movingLeft = this.dx < 0;
     var movingRight = this.dx > 0;
 
@@ -160,7 +160,7 @@
   Entity.prototype.kill = function (that, respawn) {
     that.die(respawn);
     this.killed++;
-  }
+  };
 
   window.GAME.Entity = Entity;
 
