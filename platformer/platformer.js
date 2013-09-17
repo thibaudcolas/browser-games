@@ -59,6 +59,7 @@
 
   var player = {};
   var treasures = [];
+  var monsters = [];
 
   var keys = {
     space : 32,
@@ -110,11 +111,15 @@
     var objects = map.layers[1].objects;
 
     for (var i = 0; i <objects.length; i++) {
-      if (objects[i].type === 'player') {
-        player = new Entity(objects[i]);
-      }
-      else if (objects[i].type === 'treasure') {
-        treasures.push(new Entity(objects[i]));
+      switch (objects[i].type) {
+        case 'player':
+          player = new Entity(objects[i]); break;
+        case 'treasure':
+          treasures.push(new Entity(objects[i])); break;
+        case 'monster':
+          monsters.push(new Entity(objects[i])); break;
+        default:
+          break;
       }
     }
   }
@@ -168,6 +173,13 @@
     ctx.globalAlpha = 1;
   }
 
+  function renderMonsters(ctx, dt) {
+    ctx.fillStyle = palette.slate;
+    for(var i = 0; i < monsters.length; i++) {
+      ctx.fillRect(monsters[i].x + (monsters[i].dx * dt), monsters[i].y + (monsters[i].dy * dt), MAP.tile, MAP.tile);
+    }
+  }
+
   /**
    * Main functions.
    */
@@ -182,6 +194,7 @@
     renderMap(ctx);
     renderTreasure(ctx, frame);
     renderPlayer(ctx, dt);
+    renderMonsters(ctx, dt);
   }
 
   function frame() {
