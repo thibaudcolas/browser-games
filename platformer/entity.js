@@ -47,7 +47,7 @@
 
     this.ddx = 0;
 
-    var drag = this.falling ? 0.8 : 1;
+    var drag = this.falling ? 0.5 : 1;
 
     // Accel / friction to the left.
     if (this.left) {
@@ -77,8 +77,8 @@
     // Actual movement.
     this.x += dt * this.dx;
     this.y += dt * this.dy;
-    this.dx += limit(-this.maxdx, dt * this.ddx, this.maxdx);
-    this.dy += limit(-this.maxdy, dt * this.ddy, this.maxdy);
+    this.dx = limit(-this.maxdx, this.dx + dt * this.ddx, this.maxdx);
+    this.dy = limit(-this.maxdy, this.dy + dt * this.ddy, this.maxdy);
 
     // Lag when changing direction.
     if ((movingLeft  && this.dx > 0) || (movingRight && this.dx < 0)) {

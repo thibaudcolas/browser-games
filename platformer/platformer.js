@@ -183,7 +183,7 @@
     }
 
     ctx.fillStyle = palette.slate;
-    for(var i = 0; i < player.killed ; i++) {
+    for(i = 0; i < player.killed ; i++) {
       ctx.fillRect(tileToPixel(2 + i), tileToPixel(3), MAP.tile / 2, MAP.tile / 2);
     }
   }
