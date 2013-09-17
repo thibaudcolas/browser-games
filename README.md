@@ -18,3 +18,7 @@ Trying out the [pixi.js](http://www.pixijs.com/) animation framework.
 ## Letterpaint
 
 Concept taken in [this tutorial](https://hacks.mozilla.org/2013/06/building-a-simple-paint-game-with-html5-canvas-and-vanilla-javascript/) by [Christian Heilmann](http://christianheilmann.com/). Another approach at the Canvas API, well suited for mobile devices.
+
+## JS Platformer
+
+Another implementation of [this game](https://github.com/jakesgordon/javascript-tiny-platformer) by Jake Gordon. Great game physics !
