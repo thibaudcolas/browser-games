@@ -45,3 +45,30 @@ body {
   stroke: darkcyan;
   stroke-width: 1px;
 }
+.ground .marker {
+  height: 1px;
+  left: 0px;
+  right: 0px;
+  overflow: visible;
+  background-color: #8dc63f;
+  position: absolute;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+.bubble {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  -webkit-border-radius: 50%;
+  -ie-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 2em;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}

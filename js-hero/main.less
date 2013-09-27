@@ -51,4 +51,26 @@ html,body {
       stroke-width: 1px;
     }
   }
+
+  .marker {
+    height: 1px;
+    left: 0px;
+    right: 0px;
+    overflow: visible;
+    background-color: @baseGreen;
+    position: absolute;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+.bubble {
+  .user-select(none);
+  position: absolute;
+  .border-radius(50%);
+  display: inline-block;
+  line-height: 2em;
+  text-align: center;
+  font-weight: bold;
+  color: white;
 }

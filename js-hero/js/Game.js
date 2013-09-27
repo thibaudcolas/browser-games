@@ -21,6 +21,7 @@ var Game = Backbone.View.extend({
     escKey : 27,
     accuracyOffset: 100,
     timeToShow: 6000,
+    interval: 1000 / 50,
     keys: [
       'A',
       'Z',
@@ -37,16 +38,14 @@ var Game = Backbone.View.extend({
 
   date: new Date(),
 
-  events: {
-
-  },
+  events: {},
 
   /****************************************
    * Setup.
    ****************************************/
 
   initialize: function () {
-    this.data = [];
+    this.bubbles = [];
     this.$document = $(document);
     this.$window = $(window);
     this.$body = $('body');
@@ -61,10 +60,24 @@ var Game = Backbone.View.extend({
   setup: function () {
     this.timeScale = d3.time.scale().range([0, 1]);
 
+    this.zIndexScale = d3.scale.linear()
+      .domain([0, 1])
+      .rangeRound([100, 10]);
+
+    this.opacityScale = d3.scale.linear()
+      .domain([-0.02, 0.00, 0.3, 1])
+      .range([0.0, 1, 1, 0.1]);
+
+    this.markerOpacityScale = d3.scale.linear()
+      .domain([-0.02, 0.02, 0.3, 1])
+      .range([0.0, 1, 0.1, 0]);
+
     this.xScale = d3.scale.linear().domain([-0.9, 0.9]);
     this.yScale = d3.scale.linear().domain([0, 1]);
 
     this.projectionScale = d3.scale.linear().domain([-0.01, 1.0]).range([1.00, 25]);
+
+    this.colorScale = d3.scale.category10().domain([0, this.options.keys.length - 1]);
   },
 
   /****************************************
@@ -91,6 +104,37 @@ var Game = Backbone.View.extend({
       evt.preventDefault();
     }
     console.log(evt.which);
+  },
+
+  /****************************************
+   * Game logic.
+   ****************************************/
+
+  createBubble: function (date) {
+    var i = Math.floor(Math.random() * this.options.keys.length);
+    return {
+      date: date,
+      timeStamp: date.getTime(),
+      i: i,
+      key: this.options.keys[i],
+      color: this.colorScale(i),
+      id: _.uniqueId('bubble')
+    };
+  },
+
+  addBubbles: function () {
+    var last = _.last(this.bubbles);
+    var date = new Date(new Date().getTime() + this.options.timeToShow + Math.floor(Math.random() * this.options.interval));
+    var bubble;
+
+    if (!last) {
+      bubble = this.createBubble(date);
+      console.log('bubble !');
+    }
+
+    if (bubble) {
+      this.bubbles.push(bubble);
+    }
   },
 
   /****************************************
@@ -121,9 +165,93 @@ var Game = Backbone.View.extend({
     var bubbles;
 
     bubbles = d3.select(this.el).selectAll('.bubble')
-      .data(this.data, function (d) {
+      .data(this.bubbles, function (d) {
         return d.id;
       });
+
+    bubbles.enter()
+      .append('div')
+        .attr('class', 'bubble')
+        .attr('data-r', function (d) {
+          var
+            z = that.timeScale(d.date),
+            p = 1 / that.projectionScale(z),
+            r = that.options.maxBubbleSize * p,
+            $this = $(this);
+          this.$this = $this;
+          $this.css({
+            fontSize: r,
+            width: r * 2,
+            height: r * 2,
+            backgroundColor: d.color
+          });
+
+          this.innerText = d.key;
+          return r;
+        })
+        .style('opacity', 1e-3);
+
+    bubbles
+      .attr('data-r', function (d, i) {
+        var
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z),
+          r = Math.max(~~(that.options.maxBubbleSize * p), 0.01);
+
+          this.$this.css({
+            fontSize: r,
+            width: r*2,
+            height: r*2,
+          });
+          if (d.beenHit && !d.classAdded) {
+            d.classAdded = true;
+            this.$this.addClass('has-been-hit');
+          }
+          return r;
+      })
+      .style('opacity', function (d) {
+        var
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z);
+        return that.opacityScale(z);
+      })
+      .style('z-index', function (d, i, a) {
+        return that.zIndexScale(that.timeScale(d.date));
+      })
+      .style('top', function (d) {
+        var
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z),
+          r = that.options.maxBubbleSize * p;
+        return that.yScale(p) + 'px';
+      })
+      .style('left', function (d, i) {
+        var
+          division = 2 / (that.options.keys.length + 1),
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z),
+          r = that.options.maxBubbleSize * p,
+          c = -1 + ((d.i%that.options.keys.length) + 1) * division;
+        return that.xScale(c*p) + 'px';
+      })
+      .style('margin-top', function (d) {
+        var
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z),
+          r = that.options.maxBubbleSize * p;
+        return -r*2 + 'px';
+      })
+      .style('margin-left', function (d) {
+        var
+          z = that.timeScale(d.date),
+          p = 1 / that.projectionScale(z),
+          r = that.options.maxBubbleSize * p;
+        return -r + 'px';
+      });
+
+    bubbles
+      .exit()
+      .remove();
   },
 
   renderGround: function () {
@@ -154,6 +282,54 @@ var Game = Backbone.View.extend({
         }
         return segs.join(' ');
       });
+
+    markers = d3.select(this.el).select('.ground').selectAll('.marker')
+      .data(ticks, function (d) {
+        return d.getTime();
+      })
+
+    markers.enter()
+      .insert('div', ':first-child')
+        .attr('class', 'marker')
+        .style('opacity', 0);
+
+    markers
+      .style('opacity', function (d) {
+        var
+          z = that.timeScale(d),
+          p = 1 / that.projectionScale(z);
+        return that.markerOpacityScale(z);
+      })
+      .style('z-index', function (date, i, a) {
+        return that.zIndexScale(that.timeScale(date)) - 2;
+      })
+      .style('top', function (d) {
+        var
+          z = that.timeScale(d),
+          p = 1 / that.projectionScale(z);
+        return that.yScale(p) + 'px';
+      })
+      .style('left', function (d) {
+        var
+          z = that.timeScale(d),
+          p = 1 / that.projectionScale(z);
+        return that.xScale(-1*p) + 'px';
+      })
+      .style('right', function (d) {
+        var
+          z = that.timeScale(d),
+          p = 1 / that.projectionScale(z);
+        return that.xScale(-1*p) + 'px';
+      })
+      .style('font-size', function (d) {
+        var
+          z = that.timeScale(d),
+          p = 1 / that.projectionScale(z);
+        return (p*35) + 'px';
+      });
+
+    markers.exit()
+      .remove();
   },
 
   /****************************************
@@ -162,6 +338,7 @@ var Game = Backbone.View.extend({
 
   onInterval: function () {
     this.setDate();
+    this.addBubbles();
   },
 
   interpreteData: function () {
@@ -169,7 +346,7 @@ var Game = Backbone.View.extend({
   },
 
   cleanData: function () {
-    this.data = _.filter(this.data, function (o) {
+    this.bubbles = _.filter(this.bubbles, function (o) {
       return (o.date.getTime() + 1000) > this.date.getTime();
     }, this);
   },
