@@ -5,3 +5,22 @@ body {
   overflow: hidden;
   -webkit-overflow-scrolling: none;
 }
+.game {
+  position: fixed;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: darkcyan;
+}
+.horizon {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  background-color: #8dc63f;
+  height: 5px;
+}
