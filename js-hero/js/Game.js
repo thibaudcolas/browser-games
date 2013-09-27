@@ -21,6 +21,18 @@ var Game = Backbone.View.extend({
     escKey : 27,
     accuracyOffset: 100,
     timeToShow: 6000,
+    keys: [
+      'A',
+      'Z',
+      'E',
+      'R',
+      'T',
+      'Y',
+      'U',
+      'I',
+      'O',
+      'P'
+    ]
   },
 
   date: new Date(),
@@ -93,25 +105,52 @@ var Game = Backbone.View.extend({
 
   renderGround: function () {
     var that = this;
+    var ticks = this.timeScale.ticks(d3.time.seconds, 1);
+    var markers;
 
     d3.select(this.el).select('.horizon').style('top', function () {
       var z = that.timeScale(new Date(that.date.getTime()) + (that.options.accuracyOffset / 2));
       var p = 1 / that.projectionScale(z);
       return Math.ceil(that.yScale(p)) + 'px';
     });
-  },
 
-  interpretData: function () {
-    this.timeScale.domain([this.date, new Date(this.date.getTime() + this.options.timeToShow)]);
+    d3.select(this.el).select('.verticals')
+      .attr('d', function () {
+        var
+          near = 1 / that.projectionScale.range()[0],
+          far = 1 / that.projectionScale.range()[1],
+          i = -1,
+          delta = 2 / (that.options.keys.length + 1)
+          segs = [];
+
+        while (1 > (i += delta)) {
+          segs.push(
+            'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
+            'L ' + that.xScale( 1*near * i) + ',' + that.yScale(near)
+          );
+        }
+        return segs.join(' ');
+      });
   },
 
   onInterval: function () {
     this.setDate();
   },
 
+  interpreteData: function () {
+    this.timeScale.domain([this.date, new Date(this.date.getTime() + this.options.timeToShow)]);
+  },
+
+  cleanData: function () {
+    this.data = _.filter(this.data, function (o) {
+      return (o.date.getTime() + 1000) > this.date.getTime();
+    }, this);
+  },
+
   setDate: function () {
     this.date = new Date();
-    this.interpretData();
+    this.cleanData();
+    this.interpreteData();
     this.render();
   },
 
