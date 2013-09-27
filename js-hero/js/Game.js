@@ -1,4 +1,6 @@
 var Game = Backbone.View.extend({
+  className: 'goals-timeline',
+
   template:
     '<div class="scene">' +
       '<div class="horizon"></div>' +
@@ -19,7 +21,10 @@ var Game = Backbone.View.extend({
 
   options: {
     escKey : 27,
+    maxBubbleSize: 80,
     accuracyOffset: 100,
+    minTimeBetween: 750,
+    maxTimeBetween: 1250,
     timeToShow: 6000,
     interval: 1000 / 50,
     keys: [
@@ -124,12 +129,20 @@ var Game = Backbone.View.extend({
 
   addBubbles: function () {
     var last = _.last(this.bubbles);
+    var difference = this.options.maxTimeBetween - this.options.minTimeBetween;
     var date = new Date(new Date().getTime() + this.options.timeToShow + Math.floor(Math.random() * this.options.interval));
     var bubble;
+    var bubbleDelay;
 
     if (!last) {
       bubble = this.createBubble(date);
-      console.log('bubble !');
+    }
+    else {
+      bubbleDelay = date.getTime() - last.date.getTime();
+      if (bubbleDelay > this.options.maxTimeBetween || (bubbleDelay > (difference * Math.random())) && bubbleDelay > this.options.minTimeBetween) {
+        bubble = this.createBubble(date);
+        console.log('bubb !');
+      }
     }
 
     if (bubble) {

@@ -46,9 +46,9 @@ body {
   stroke-width: 1px;
 }
 .ground .marker {
-  height: 1px;
-  left: 0px;
-  right: 0px;
+  height: 3px;
+  left: 0;
+  right: 0;
   overflow: visible;
   background-color: #8dc63f;
   position: absolute;
