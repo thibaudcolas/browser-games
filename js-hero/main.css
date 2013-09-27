@@ -42,6 +42,6 @@ body {
   stroke: none;
 }
 .ground svg .verticals {
-  stroke: #777;
+  stroke: darkcyan;
   stroke-width: 1px;
 }

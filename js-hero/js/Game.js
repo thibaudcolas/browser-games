@@ -41,6 +41,10 @@ var Game = Backbone.View.extend({
 
   },
 
+  /****************************************
+   * Setup.
+   ****************************************/
+
   initialize: function () {
     this.data = [];
     this.$document = $(document);
@@ -62,6 +66,10 @@ var Game = Backbone.View.extend({
 
     this.projectionScale = d3.scale.linear().domain([-0.01, 1.0]).range([1.00, 25]);
   },
+
+  /****************************************
+   * Event binding.
+   ****************************************/
 
   attach: function () {
     this.$document.on('keydown', this.onKeydown.bind(this));
@@ -85,6 +93,10 @@ var Game = Backbone.View.extend({
     console.log(evt.which);
   },
 
+  /****************************************
+   * Rendering.
+   ****************************************/
+
   layout : function () {
     var w = this.$el.width() || 848;
     var h = this.$el.height() || 518;
@@ -100,7 +112,18 @@ var Game = Backbone.View.extend({
 
   render: function () {
     this.renderGround();
+    this.renderBubbles();
     console.log('render');
+  },
+
+  renderBubbles: function () {
+    var that = this;
+    var bubbles;
+
+    bubbles = d3.select(this.el).selectAll('.bubble')
+      .data(this.data, function (d) {
+        return d.id;
+      });
   },
 
   renderGround: function () {
@@ -132,6 +155,10 @@ var Game = Backbone.View.extend({
         return segs.join(' ');
       });
   },
+
+  /****************************************
+   * Game loop.
+   ****************************************/
 
   onInterval: function () {
     this.setDate();
