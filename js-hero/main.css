@@ -1,0 +1,7 @@
+html,
+body {
+  background: #24334a;
+  font-family: Helvetica, tahoma;
+  overflow: hidden;
+  -webkit-overflow-scrolling: none;
+}
