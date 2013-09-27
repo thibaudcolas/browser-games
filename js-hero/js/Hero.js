@@ -8,6 +8,10 @@ var Hero = Backbone.View.extend({
     if (this.browserSupportsTouch()) {
       console.log('supports touch');
     }
+
+    this.game = new Game({
+      el: $('.game')
+    });
   },
 
   browserSupportsTouch: function () {
