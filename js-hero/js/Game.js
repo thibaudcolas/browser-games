@@ -23,6 +23,8 @@ var Game = Backbone.View.extend({
     timeToShow: 6000,
   },
 
+  date: new Date(),
+
   events: {
 
   },
@@ -35,12 +37,15 @@ var Game = Backbone.View.extend({
     this.$el.html(this.template);
     this.onInterval = this.onInterval.bind(this);
     this.setup();
+    this.layout();
     this.attach();
+    this.render();
   },
 
   setup: function () {
     this.timeScale = d3.time.scale().range([0, 1]);
 
+    this.xScale = d3.scale.linear().domain([-0.9, 0.9]);
     this.yScale = d3.scale.linear().domain([0, 1]);
 
     this.projectionScale = d3.scale.linear().domain([-0.01, 1.0]).range([1.00, 25]);
@@ -54,7 +59,8 @@ var Game = Backbone.View.extend({
   },
 
   onWindowResize: function () {
-
+    this.layout();
+    this.render();
   },
 
   onKeydown: function (evt) {
@@ -65,6 +71,19 @@ var Game = Backbone.View.extend({
       evt.preventDefault();
     }
     console.log(evt.which);
+  },
+
+  layout : function () {
+    var w = this.$el.width() || 848;
+    var h = this.$el.height() || 518;
+    var s = Math.min(w, h);
+
+    this.xScale.range([0, w]);
+    this.yScale.range([h * 0.125, h]);
+
+    d3.select(this.el).select('.ground').select('svg')
+      .attr('width', w)
+      .attr('height', h);
   },
 
   render: function () {
@@ -99,6 +118,7 @@ var Game = Backbone.View.extend({
   start: function () {
     if (!this.started) {
       this.started = true;
+      this.layout();
       this.setDate();
       this.interval = window.setInterval(this.onInterval, this.options.interval);
     }
