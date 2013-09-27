@@ -12,6 +12,10 @@ var Hero = Backbone.View.extend({
     this.game = new Game({
       el: $('.game')
     });
+
+    _.defer(function (that) {
+      that.game.start();
+    }, this);
   },
 
   browserSupportsTouch: function () {

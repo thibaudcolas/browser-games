@@ -19,8 +19,30 @@ body {
 }
 .horizon {
   position: absolute;
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
   background-color: #8dc63f;
   height: 5px;
+}
+.ground {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.ground svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+.ground svg .grass {
+  stroke: none;
+}
+.ground svg .verticals {
+  stroke: #777;
+  stroke-width: 1px;
 }
