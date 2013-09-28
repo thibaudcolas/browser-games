@@ -22,7 +22,7 @@ var Game = Backbone.View.extend({
 
   options: {
     escKey : 27,
-    maxBubbleSize: 80,
+    maxnotesize: 80,
     accuracyOffset: 100,
     minTimeBetween: 750,
     maxTimeBetween: 1250,
@@ -51,7 +51,7 @@ var Game = Backbone.View.extend({
    ****************************************/
 
   initialize: function () {
-    this.bubbles = [];
+    this.notes = [];
     this.$document = $(document);
     this.$window = $(window);
     this.$body = $('body');
@@ -116,7 +116,7 @@ var Game = Backbone.View.extend({
    * Game logic.
    ****************************************/
 
-  createBubble: function (date) {
+  createNote: function (date) {
     var i = Math.floor(Math.random() * this.options.keys.length);
     return {
       date: date,
@@ -124,29 +124,29 @@ var Game = Backbone.View.extend({
       i: i,
       key: this.options.keys[i],
       color: this.colorScale(i),
-      id: _.uniqueId('bubble')
+      id: _.uniqueId('note')
     };
   },
 
-  addBubbles: function () {
-    var last = _.last(this.bubbles);
+  addnotes: function () {
+    var last = _.last(this.notes);
     var difference = this.options.maxTimeBetween - this.options.minTimeBetween;
     var date = new Date(new Date().getTime() + this.options.timeToShow + Math.floor(Math.random() * this.options.interval));
-    var bubble;
-    var bubbleDelay;
+    var note;
+    var noteDelay;
 
     if (!last) {
-      bubble = this.createBubble(date);
+      note = this.createNote(date);
     }
     else {
-      bubbleDelay = date.getTime() - last.date.getTime();
-      if (bubbleDelay > this.options.maxTimeBetween || (bubbleDelay > (difference * Math.random())) && bubbleDelay > this.options.minTimeBetween) {
-        bubble = this.createBubble(date);
+      noteDelay = date.getTime() - last.date.getTime();
+      if (noteDelay > this.options.maxTimeBetween || (noteDelay > (difference * Math.random())) && noteDelay > this.options.minTimeBetween) {
+        note = this.createNote(date);
       }
     }
 
-    if (bubble) {
-      this.bubbles.push(bubble);
+    if (note) {
+      this.notes.push(note);
     }
   },
 
@@ -206,27 +206,27 @@ var Game = Backbone.View.extend({
 
   render: function () {
     this.renderFrets();
-    this.renderBubbles();
+    this.renderNotes();
     console.log('render');
   },
 
-  renderBubbles: function () {
+  renderNotes: function () {
     var that = this;
-    var bubbles;
+    var notes;
 
-    bubbles = d3.select(this.el).selectAll('.bubble')
-      .data(this.bubbles, function (d) {
+    notes = d3.select(this.el).selectAll('.note')
+      .data(this.notes, function (d) {
         return d.id;
       });
 
-    bubbles.enter()
+    notes.enter()
       .append('div')
-        .attr('class', 'bubble')
+        .attr('class', 'note')
         .attr('data-r', function (d) {
           var
             z = that.timeScale(d.date),
             p = 1 / that.projectionScale(z),
-            r = that.options.maxBubbleSize * p,
+            r = that.options.maxnotesize * p,
             $this = $(this);
           this.$this = $this;
           $this.css({
@@ -241,12 +241,12 @@ var Game = Backbone.View.extend({
         })
         .style('opacity', 1e-3);
 
-    bubbles
+    notes
       .attr('data-r', function (d, i) {
         var
           z = that.timeScale(d.date),
           p = 1 / that.projectionScale(z),
-          r = Math.max(~~(that.options.maxBubbleSize * p), 0.01);
+          r = Math.max(~~(that.options.maxnotesize * p), 0.01);
 
           this.$this.css({
             fontSize: r,
@@ -270,7 +270,7 @@ var Game = Backbone.View.extend({
         var
           z = that.timeScale(d.date),
           p = 1 / that.projectionScale(z),
-          r = that.options.maxBubbleSize * p;
+          r = that.options.maxnotesize * p;
         return that.yScale(p) + 'px';
       })
       .style('left', function (d, i) {
@@ -278,7 +278,7 @@ var Game = Backbone.View.extend({
           division = 2 / (that.options.keys.length + 1),
           z = that.timeScale(d.date),
           p = 1 / that.projectionScale(z),
-          r = that.options.maxBubbleSize * p,
+          r = that.options.maxnotesize * p,
           c = -1 + ((d.i%that.options.keys.length) + 1) * division;
         return that.xScale(c*p) + 'px';
       })
@@ -286,18 +286,18 @@ var Game = Backbone.View.extend({
         var
           z = that.timeScale(d.date),
           p = 1 / that.projectionScale(z),
-          r = that.options.maxBubbleSize * p;
+          r = that.options.maxnotesize * p;
         return -r*2 + 'px';
       })
       .style('margin-left', function (d) {
         var
           z = that.timeScale(d.date),
           p = 1 / that.projectionScale(z),
-          r = that.options.maxBubbleSize * p;
+          r = that.options.maxnotesize * p;
         return -r + 'px';
       });
 
-    bubbles
+    notes
       .exit()
       .remove();
   },
@@ -360,7 +360,7 @@ var Game = Backbone.View.extend({
 
   onInterval: function () {
     this.setDate();
-    this.addBubbles();
+    this.addnotes();
   },
 
   interpreteData: function () {
@@ -368,7 +368,7 @@ var Game = Backbone.View.extend({
   },
 
   cleanData: function () {
-    this.bubbles = _.filter(this.bubbles, function (o) {
+    this.notes = _.filter(this.notes, function (o) {
       return (o.date.getTime() + 1000) > this.date.getTime();
     }, this);
   },
