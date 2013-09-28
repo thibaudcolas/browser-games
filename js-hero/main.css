@@ -13,7 +13,7 @@ body {
   bottom: 0;
 }
 .horizon {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 100px;
@@ -39,9 +39,13 @@ body {
 .ground svg .grass {
   stroke: none;
 }
-.ground svg .verticals {
+.ground svg .frets {
   stroke: darkcyan;
-  stroke-width: 1px;
+  stroke-width: 2px;
+}
+.ground svg .fretboard {
+  fill: #334;
+  opacity: 0.5;
 }
 .ground .marker {
   height: 3px;

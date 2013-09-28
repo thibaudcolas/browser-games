@@ -14,7 +14,8 @@ var Game = Backbone.View.extend({
             '</linearGradient>' +
           '</defs>' +
           '<path class="grass" d="M 0,0 L 0,0 L 0,0, L 0,0 z" fill="url(#goal-timeline-grad)"/>' +
-          '<path class="verticals" />' +
+          '<path class="frets" />' +
+          '<path class="fretboard"/>' +
         '</svg>' +
       '</div>' +
     '</div>',
@@ -158,6 +159,7 @@ var Game = Backbone.View.extend({
     var w = this.$el.width() || 848;
     var h = this.$el.height() || 518;
     var s = Math.min(w, h);
+    var that = this;
 
     this.xScale.range([0, w]);
     this.yScale.range([h * 0.125, h]);
@@ -165,6 +167,39 @@ var Game = Backbone.View.extend({
     d3.select(this.el).select('.ground').select('svg')
       .attr('width', w)
       .attr('height', h);
+
+    d3.select(this.el).select('.horizon').style('top', function () {
+      var z = that.timeScale(new Date(that.date.getTime()) + (that.options.accuracyOffset / 2));
+      var p = 1 / that.projectionScale(z);
+      return Math.ceil(that.yScale(p)) + 'px';
+    });
+
+    d3.select('.fretboard').attr('d', function () {
+      var near = 1 / that.projectionScale.range()[0];
+      var d = [];
+      d.push('M ' + h * 0.0 + ',' + h);
+      d.push('L ' + that.xScale(0) + ',' + that.yScale(0));
+      d.push('L ' + h * 1.79 + ',' + h);
+
+      return d.join(' ');
+    });
+
+    d3.select(this.el).select('.frets').attr('d', function () {
+      var
+        near = 1 / that.projectionScale.range()[0],
+        far = 1 / that.projectionScale.range()[1],
+        i = -1,
+        delta = 2 / (that.options.keys.length + 1)
+        segs = [];
+
+      while (1 > (i += delta)) {
+        segs.push(
+          'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
+          'L ' + that.xScale(1 * near * i) + ',' + that.yScale(near)
+        );
+      }
+      return segs.join(' ');
+    });
   },
 
   render: function () {
@@ -269,30 +304,6 @@ var Game = Backbone.View.extend({
     var that = this;
     var ticks = this.timeScale.ticks(d3.time.seconds, 1);
     var markers;
-
-    d3.select(this.el).select('.horizon').style('top', function () {
-      var z = that.timeScale(new Date(that.date.getTime()) + (that.options.accuracyOffset / 2));
-      var p = 1 / that.projectionScale(z);
-      return Math.ceil(that.yScale(p)) + 'px';
-    });
-
-    d3.select(this.el).select('.verticals')
-      .attr('d', function () {
-        var
-          near = 1 / that.projectionScale.range()[0],
-          far = 1 / that.projectionScale.range()[1],
-          i = -1,
-          delta = 2 / (that.options.keys.length + 1)
-          segs = [];
-
-        while (1 > (i += delta)) {
-          segs.push(
-            'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
-            'L ' + that.xScale( 1*near * i) + ',' + that.yScale(near)
-          );
-        }
-        return segs.join(' ');
-      });
 
     markers = d3.select(this.el).select('.ground').selectAll('.marker')
       .data(ticks, function (d) {
