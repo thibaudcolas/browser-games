@@ -223,9 +223,7 @@ var Game = Backbone.View.extend({
           return r;
       })
       .style('opacity', function (d) {
-        var
-          z = that.timeScale(d.date),
-          p = 1 / that.projectionScale(z);
+        var z = that.timeScale(d.date);
         return that.opacityScale(z);
       })
       .style('z-index', function (d, i, a) {
@@ -308,9 +306,7 @@ var Game = Backbone.View.extend({
 
     markers
       .style('opacity', function (d) {
-        var
-          z = that.timeScale(d),
-          p = 1 / that.projectionScale(z);
+        var z = that.timeScale(d);
         return that.markerOpacityScale(z);
       })
       .style('z-index', function (date, i, a) {
@@ -326,19 +322,19 @@ var Game = Backbone.View.extend({
         var
           z = that.timeScale(d),
           p = 1 / that.projectionScale(z);
-        return that.xScale(-1*p) + 'px';
+        return that.xScale(-1 * p) + 'px';
       })
       .style('right', function (d) {
         var
           z = that.timeScale(d),
           p = 1 / that.projectionScale(z);
-        return that.xScale(-1*p) + 'px';
+        return that.xScale(-1 * p) + 'px';
       })
       .style('font-size', function (d) {
         var
           z = that.timeScale(d),
           p = 1 / that.projectionScale(z);
-        return (p*35) + 'px';
+        return (p * 35) + 'px';
       });
 
     markers.exit()

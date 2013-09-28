@@ -17,11 +17,13 @@ body {
   user-select: none;
 }
 .horizon {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
+  bottom: 100px;
   background-color: #8dc63f;
   height: 5px;
+  z-index: 10;
 }
 .ground {
   position: absolute;
