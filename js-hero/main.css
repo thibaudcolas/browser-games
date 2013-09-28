@@ -12,6 +12,31 @@ body {
   right: 0;
   bottom: 0;
 }
+.game.paused .paused-text-container {
+  display: block;
+}
+.game .paused-text-container {
+  z-index: 200;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgba(200, 200, 200, 0.75);
+  display: none;
+}
+.game .paused-text-container .paused-text {
+  color: white;
+  text-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2);
+  font-size: 4em;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  margin-top: -1em;
+  left: 0px;
+  right: 0px;
+  cursor: pointer;
+}
 .horizon {
   position: absolute;
   left: 0;

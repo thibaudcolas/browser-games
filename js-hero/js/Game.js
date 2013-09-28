@@ -18,7 +18,8 @@ var Game = Backbone.View.extend({
           '<path class="fretboard"/>' +
         '</svg>' +
       '</div>' +
-    '</div>',
+    '</div>' +
+    '<div class="paused-text-container"><div class="paused-text">&#x25B6;</div></div>',
 
   options: {
     escKey : 27,
@@ -91,10 +92,12 @@ var Game = Backbone.View.extend({
    ****************************************/
 
   attach: function () {
+    var that = this;
     this.$document.on('keydown', this.onKeydown.bind(this));
     this.$window.on('resize', this.onWindowResize.bind(this));
     this.$window.on('scroll touchmove', function (evt) { evt.preventDefault(); });
     this.$body.on('scroll touchmove', function (evt) { evt.preventDefault(); });
+    this.$body.find('.paused-text-container').on('click touchstart', function (evt) { that.start(); });
   },
 
   onWindowResize: function () {
@@ -108,8 +111,12 @@ var Game = Backbone.View.extend({
     }
     if (evt.which === this.options.escKey) {
       evt.preventDefault();
+      return this.started ? this.stop() : this.start();
     }
-    console.log(evt.which);
+    if (!this.started) {
+      return;
+    }
+    evt.preventDefault();
   },
 
   /****************************************
@@ -128,7 +135,7 @@ var Game = Backbone.View.extend({
     };
   },
 
-  addnotes: function () {
+  addNotes: function () {
     var last = _.last(this.notes);
     var difference = this.options.maxTimeBetween - this.options.minTimeBetween;
     var date = new Date(new Date().getTime() + this.options.timeToShow + Math.floor(Math.random() * this.options.interval));
@@ -198,7 +205,6 @@ var Game = Backbone.View.extend({
           'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
           'L ' + that.xScale(1 * near * i) + ',' + that.yScale(near)
         );
-        console.log(i);
       }
       return segs.join(' ');
     });
@@ -207,7 +213,6 @@ var Game = Backbone.View.extend({
   render: function () {
     this.renderFrets();
     this.renderNotes();
-    console.log('render');
   },
 
   renderNotes: function () {
@@ -360,7 +365,7 @@ var Game = Backbone.View.extend({
 
   onInterval: function () {
     this.setDate();
-    this.addnotes();
+    this.addNotes();
   },
 
   interpreteData: function () {
@@ -386,6 +391,15 @@ var Game = Backbone.View.extend({
       this.layout();
       this.setDate();
       this.interval = window.setInterval(this.onInterval, this.options.interval);
+      this.$el.removeClass('paused');
+    }
+  },
+
+  stop: function () {
+    if (this.started) {
+      window.clearInterval(this.interval);
+      this.$el.addClass('paused');
+      this.started = false;
     }
   }
 });
