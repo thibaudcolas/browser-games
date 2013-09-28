@@ -14,7 +14,7 @@ var Game = Backbone.View.extend({
             '</linearGradient>' +
           '</defs>' +
           '<path class="grass" d="M 0,0 L 0,0 L 0,0, L 0,0 z" fill="url(#goal-timeline-grad)"/>' +
-          '<path class="frets" />' +
+          '<path class="verticals" />' +
           '<path class="fretboard"/>' +
         '</svg>' +
       '</div>' +
@@ -74,7 +74,7 @@ var Game = Backbone.View.extend({
       .domain([-0.02, 0.00, 0.3, 1])
       .range([0.0, 1, 1, 0.1]);
 
-    this.markerOpacityScale = d3.scale.linear()
+    this.fretOpacityScale = d3.scale.linear()
       .domain([-0.02, 0.02, 0.3, 1])
       .range([0.0, 1, 0.1, 0]);
 
@@ -142,7 +142,6 @@ var Game = Backbone.View.extend({
       bubbleDelay = date.getTime() - last.date.getTime();
       if (bubbleDelay > this.options.maxTimeBetween || (bubbleDelay > (difference * Math.random())) && bubbleDelay > this.options.minTimeBetween) {
         bubble = this.createBubble(date);
-        console.log('bubb !');
       }
     }
 
@@ -176,15 +175,17 @@ var Game = Backbone.View.extend({
 
     d3.select('.fretboard').attr('d', function () {
       var near = 1 / that.projectionScale.range()[0];
+      var delta = 2 / (that.options.keys.length + 1);
+      var i = -1
       var d = [];
-      d.push('M ' + h * 0.0 + ',' + h);
+      d.push('M ' + that.xScale(1 * near * i) + ',' + that.yScale(near));
       d.push('L ' + that.xScale(0) + ',' + that.yScale(0));
-      d.push('L ' + h * 1.79 + ',' + h);
+      d.push('L ' + that.xScale(1 * near * (-1 + delta * (that.options.keys.length + 1))) + ',' + that.yScale(near));
 
       return d.join(' ');
     });
 
-    d3.select(this.el).select('.frets').attr('d', function () {
+    d3.select(this.el).select('.verticals').attr('d', function () {
       var
         near = 1 / that.projectionScale.range()[0],
         far = 1 / that.projectionScale.range()[1],
@@ -197,13 +198,14 @@ var Game = Backbone.View.extend({
           'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
           'L ' + that.xScale(1 * near * i) + ',' + that.yScale(near)
         );
+        console.log(i);
       }
       return segs.join(' ');
     });
   },
 
   render: function () {
-    this.renderGround();
+    this.renderFrets();
     this.renderBubbles();
     console.log('render');
   },
@@ -300,25 +302,25 @@ var Game = Backbone.View.extend({
       .remove();
   },
 
-  renderGround: function () {
+  renderFrets: function () {
     var that = this;
     var ticks = this.timeScale.ticks(d3.time.seconds, 1);
-    var markers;
+    var frets;
 
-    markers = d3.select(this.el).select('.ground').selectAll('.marker')
+    frets = d3.select(this.el).select('.ground').selectAll('.fret')
       .data(ticks, function (d) {
         return d.getTime();
-      })
+      });
 
-    markers.enter()
+    frets.enter()
       .insert('div', ':first-child')
-        .attr('class', 'marker')
+        .attr('class', 'fret')
         .style('opacity', 0);
 
-    markers
+    frets
       .style('opacity', function (d) {
         var z = that.timeScale(d);
-        return that.markerOpacityScale(z);
+        return that.fretOpacityScale(z);
       })
       .style('z-index', function (date, i, a) {
         return that.zIndexScale(that.timeScale(date)) - 2;
@@ -348,7 +350,7 @@ var Game = Backbone.View.extend({
         return (p * 35) + 'px';
       });
 
-    markers.exit()
+    frets.exit()
       .remove();
   },
 

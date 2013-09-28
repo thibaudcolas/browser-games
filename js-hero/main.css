@@ -39,15 +39,17 @@ body {
 .ground svg .grass {
   stroke: none;
 }
-.ground svg .frets {
+.ground svg .verticals {
   stroke: darkcyan;
   stroke-width: 2px;
 }
 .ground svg .fretboard {
   fill: #334;
   opacity: 0.5;
+  stroke: #2A2A33;
+  stroke-width: 2px;
 }
-.ground .marker {
+.ground .fret {
   height: 3px;
   left: 0;
   right: 0;
