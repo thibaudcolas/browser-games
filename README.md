@@ -22,3 +22,7 @@ Concept taken in [this tutorial](https://hacks.mozilla.org/2013/06/building-a-si
 ## JS Platformer
 
 Another implementation of [this game](https://github.com/jakesgordon/javascript-tiny-platformer) by Jake Gordon. Great game physics !
+
+## JS Hero
+
+Original game engine / experiment by [Inline Block](https://github.com/inlineblock/javascript-hero).
