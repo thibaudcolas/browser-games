@@ -1,5 +1,3 @@
-@import "mixins.less";
-
 @baseGreen: #8dc63f;
 @baseGray: #24334A;
 
@@ -16,7 +14,6 @@ html,body {
   left: 0;
   right: 0;
   bottom: 0;
-  .user-select(none);
 }
 
 .horizon {
@@ -67,9 +64,12 @@ html,body {
 }
 
 .bubble {
-  .user-select(none);
   position: absolute;
-  .border-radius(50%);
+  -webkit-border-radius: 50%;
+      -ie-border-radius: 50%;
+      -ms-border-radius: 50%;
+     -moz-border-radius: 50%;
+          border-radius: 50%;
   display: inline-block;
   line-height: 2em;
   text-align: center;

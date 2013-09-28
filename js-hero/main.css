@@ -11,10 +11,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .horizon {
   position: fixed;
@@ -58,10 +54,6 @@ body {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 .bubble {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   position: absolute;
   -webkit-border-radius: 50%;
   -ie-border-radius: 50%;
