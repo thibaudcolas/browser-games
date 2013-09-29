@@ -13,7 +13,6 @@ var Game = Backbone.View.extend({
               '<stop offset="100%" stop-color="#666" />' +
             '</linearGradient>' +
           '</defs>' +
-          '<path class="grass" d="M 0,0 L 0,0 L 0,0, L 0,0 z" fill="url(#goal-timeline-grad)"/>' +
           '<path class="fretboard"/>' +
           '<path class="verticals" />' +
         '</svg>' +
@@ -100,6 +99,14 @@ var Game = Backbone.View.extend({
     this.$window.on('scroll touchmove', function (evt) { evt.preventDefault(); });
     this.$body.on('scroll touchmove', function (evt) { evt.preventDefault(); });
     this.$body.find('.paused-text-container').on('click touchstart', function (evt) { that.start(); });
+    this.$body.find('.score-bar').on('click touchstart', function (evt) {
+      if (that.started) {
+        that.stop();
+      }
+      else {
+        that.start();
+      }
+    });
   },
 
   onWindowResize: function () {
@@ -134,10 +141,10 @@ var Game = Backbone.View.extend({
         if (note.timeStamp > high) {
           break;
         }
-        console.log(note.key);
         if (!note.beenHit && note.key === key) {
           this.options.score++;
           note.beenHit = true;
+          this.trigger('score', {score: this.options.score, note: note});
         }
       }
     }
@@ -425,6 +432,11 @@ var Game = Backbone.View.extend({
     if (!this.started) {
       this.started = true;
       this.layout();
+
+      if (this.stoppedTime && this.notes.length) {
+        this.adjustDataForStoppedTime();
+      }
+
       this.setDate();
       this.interval = window.setInterval(this.onInterval, this.options.interval);
       this.$el.removeClass('paused');
@@ -436,6 +448,14 @@ var Game = Backbone.View.extend({
       window.clearInterval(this.interval);
       this.$el.addClass('paused');
       this.started = false;
+      this.stoppedTime = new Date();
     }
-  }
+  },
+
+  adjustDataForStoppedTime: function () {
+    var diff = new Date().getTime() - this.stoppedTime.getTime();
+    _.each(this.notes, function (n) {
+      n.date = new Date(n.date.getTime() + diff);
+    });
+  },
 });

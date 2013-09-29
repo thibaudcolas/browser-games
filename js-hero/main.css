@@ -108,10 +108,39 @@ body {
   color: white;
 }
 .note.has-been-hit {
+  -webkit-box-shadow: 0 0 16px white;
+  -moz-box-shadow: 0 0 16px white;
   box-shadow: 0 0 16px white;
   -webkit-transform: scale(0.1);
   -moz-transform: scale(0.1);
   -ms-transform: scale(0.1);
   -o-transform: scale(0.1);
   transform: scale(0.1);
+}
+.score-bar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 40px;
+  height: 4vmax;
+  background: white;
+  text-align: center;
+  font-size: 2em;
+  font-size: 3vmax;
+  line-height: 3vmax;
+}
+.score-bar .score {
+  position: absolute;
+  top: 50%;
+  left: 1em;
+  margin-top: -0.5em;
+  color: #666;
+}
+.score-bar .hits {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  margin-top: -0.5em;
+  color: #666;
 }
