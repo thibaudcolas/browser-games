@@ -35,12 +35,26 @@
     };
   };
 
+  var sortPuff = function(p1, p2) { return p1.p-p2.p; };
   puffs.push(new Puff(0));
   puffs.push(new Puff(20));
   puffs.push(new Puff(40));
 
+  var before = Date.now();
+  var now = null;
+  var time = null;
+
   function loop () {
-    puffs[0].move(2);
+    now = Date.now();
+    time = (now - before) * 0.1;
+    time = Math.max(time, 3);
+    before = now;
+
+    puffs.sort(sortPuff);
+
+    puffs[0].move(time);
+    puffs[1].move(time);
+    puffs[2].move(time);
 
     ctx2.drawImage(canvas,0 ,0 ,570 ,570);
     window.requestAnimationFrame(loop, canvas);
