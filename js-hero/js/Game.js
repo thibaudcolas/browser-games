@@ -273,13 +273,11 @@ var Game = Backbone.View.extend({
             $this = $(this);
           this.$this = $this;
           $this.css({
-            fontSize: r,
             width: r * 2,
             height: r * 2,
             backgroundColor: d.color
           });
-
-          this.innerText = d.key;
+          this.innerHTML = d.key;
           return r;
         })
         .style('opacity', 1e-3);
