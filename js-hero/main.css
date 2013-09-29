@@ -107,3 +107,11 @@ body {
   font-weight: bold;
   color: white;
 }
+.note.has-been-hit {
+  box-shadow: 0 0 16px white;
+  -webkit-transform: scale(0.1);
+  -moz-transform: scale(0.1);
+  -ms-transform: scale(0.1);
+  -o-transform: scale(0.1);
+  transform: scale(0.1);
+}

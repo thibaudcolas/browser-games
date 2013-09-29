@@ -25,9 +25,11 @@ var Game = Backbone.View.extend({
     escKey : 27,
     maxnotesize: 80,
     accuracyOffset: 100,
+    accuracy : 250,
     minTimeBetween: 750,
     maxTimeBetween: 1250,
     timeToShow: 6000,
+    score: 0,
     interval: 1000 / 50,
     keys: [
       'A',
@@ -121,7 +123,24 @@ var Game = Backbone.View.extend({
   },
 
   processKeyHit: function (key) {
+    var current = new Date().getTime() + this.options.accuracyOffset;
+    var high = current + this.options.accuracy;
+    var low = current - this.options.accuracy;
+    var note;
 
+    if (this.options.keys.indexOf(key) !== -1) {
+      for (var i = 0; i < this.notes.length; i++) {
+        note = this.notes[i];
+        if (note.timeStamp > high) {
+          break;
+        }
+        console.log(note.key);
+        if (!note.beenHit && note.key === key) {
+          this.options.score++;
+          note.beenHit = true;
+        }
+      }
+    }
   },
 
   /****************************************
