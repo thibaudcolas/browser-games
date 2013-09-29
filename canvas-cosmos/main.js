@@ -46,7 +46,7 @@
 
   function loop () {
     now = Date.now();
-    time = (now - before) * 0.1;
+    time = (now - before) * 0.01;
     time = Math.max(time, 3);
     before = now;
 
