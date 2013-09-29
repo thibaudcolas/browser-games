@@ -33,7 +33,7 @@ html, body {
   }
 
   .paused-text-container {
-    z-index: 200;
+    z-index: 1000;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -61,7 +61,7 @@ html, body {
   left: 0;
   right: 0;
   overflow: visible;
-  background-color: @baseGreen;
+  background-color: darkcyan;
   position: absolute;
   z-index: 100;
   text-rendering: geometricPrecision;
@@ -82,10 +82,6 @@ html, body {
     bottom: 0;
     left: 0;
     z-index: 0;
-
-    .grass {
-      stroke: none;
-    }
 
     .verticals {
       stroke: darkcyan;
@@ -167,5 +163,47 @@ html, body {
     right: 1em;
     margin-top: -0.5em;
     color: #666;
+  }
+}
+
+.controller-bar {
+  z-index: 200;
+  position: fixed;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  button {
+    color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    background-color: @baseGray;
+    border: none;
+    font-size: 20px;
+    font-size: 4vmax;
+    line-height: 30px;
+    line-height: 5vmax;
+    width: 30px;
+    width: 5vmax;
+    height: 30px;
+    height: 5vmax;
+    -webkit-border-top-left-radius: 50%;
+        -ie-border-top-left-radius: 50%;
+        -ms-border-top-left-radius: 50%;
+       -moz-border-top-left-radius: 50%;
+            border-top-left-radius: 50%;
+    -webkit-border-top-right-radius: 50%;
+        -ie-border-top-right-radius: 50%;
+        -ms-border-top-right-radius: 50%;
+       -moz-border-top-right-radius: 50%;
+            border-top-right-radius: 50%;
+    -webkit-appearance: none;
+    padding: 0;
+    text-align: center;
+    margin: 0 2% 10px;
+    margin: 0 2.4vmax 10px;
+    opacity: 0.5;
+    &:active {
+      opacity: 0.2;
+    }
   }
 }

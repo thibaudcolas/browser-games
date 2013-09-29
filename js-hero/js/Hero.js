@@ -13,9 +13,10 @@ var Hero = Backbone.View.extend({
   },
 
   build: function () {
-    if (this.browserSupportsTouch()) {
-      console.log('supports touch');
-    }
+    this.controllerBar = new ControllerBar({
+      keys: _.clone(Game.prototype.options.keys)
+    });
+    this.$body.append(this.controllerBar.$el);
 
     this.game = new Game({
       el: $('.game')
@@ -33,6 +34,7 @@ var Hero = Backbone.View.extend({
 
   attach: function () {
     this.listenTo(this.game, 'score', this.onGameScore);
+    this.listenTo(this.controllerBar, 'press', this.onControllerBarPress);
   },
 
   onGameScore: function (evt) {
@@ -42,13 +44,7 @@ var Hero = Backbone.View.extend({
     });
   },
 
-  browserSupportsTouch: function () {
-    try {
-      document.createEvent("TouchEvent");
-      return true;
-    }
-    catch (e) {
-      return false;
-    }
+  onControllerBarPress: function (evt) {
+    this.game.processKeyHit(evt.key);
   }
 });

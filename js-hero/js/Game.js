@@ -44,6 +44,10 @@ var Game = Backbone.View.extend({
     ]
   },
 
+  track: new Howl({
+    urls: ['tunes/brokeforfree-layers-ascolourfulasever.mp3', 'tunes/brokeforfree-layers-ascolourfulasever.ogg']
+  }),
+
   date: new Date(),
 
   events: {},
@@ -433,6 +437,8 @@ var Game = Backbone.View.extend({
       this.started = true;
       this.layout();
 
+       this.track.play();
+
       if (this.stoppedTime && this.notes.length) {
         this.adjustDataForStoppedTime();
       }
@@ -447,6 +453,9 @@ var Game = Backbone.View.extend({
     if (this.started) {
       window.clearInterval(this.interval);
       this.$el.addClass('paused');
+
+      this.track.pause();
+
       this.started = false;
       this.stoppedTime = new Date();
     }
