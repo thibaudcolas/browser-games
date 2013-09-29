@@ -11,4 +11,11 @@
   img.src = 'cosmos.jpg';
   ctx3.drawImage(img, 0, 0, 570, 570);
 
+  function loop () {
+    window.requestAnimationFrame(loop, canvas);
+  }
+
+
+  loop();
+
 })();
