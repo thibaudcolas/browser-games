@@ -14,8 +14,8 @@ var Game = Backbone.View.extend({
             '</linearGradient>' +
           '</defs>' +
           '<path class="grass" d="M 0,0 L 0,0 L 0,0, L 0,0 z" fill="url(#goal-timeline-grad)"/>' +
-          '<path class="verticals" />' +
           '<path class="fretboard"/>' +
+          '<path class="verticals" />' +
         '</svg>' +
       '</div>' +
     '</div>' +
@@ -117,6 +117,11 @@ var Game = Backbone.View.extend({
       return;
     }
     evt.preventDefault();
+    this.processKeyHit(String.fromCharCode(evt.keyCode));
+  },
+
+  processKeyHit: function (key) {
+
   },
 
   /****************************************

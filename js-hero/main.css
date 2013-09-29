@@ -1,6 +1,6 @@
 html,
 body {
-  background: #24334a;
+  background-color: #24334a;
   font-family: Helvetica, tahoma;
   overflow: hidden;
   -webkit-overflow-scrolling: none;
@@ -11,6 +11,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  background: radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.15) 30%, rgba(255, 255, 255, 0.3) 32%, rgba(255, 255, 255, 0) 33%) 0 0, radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.1) 11%, rgba(255, 255, 255, 0.3) 13%, rgba(255, 255, 255, 0) 14%) 0 0, radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 17%, rgba(255, 255, 255, 0.43) 19%, rgba(255, 255, 255, 0) 20%) 0 110px, radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 11%, rgba(255, 255, 255, 0.4) 13%, rgba(255, 255, 255, 0) 14%) -130px -170px, radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 11%, rgba(255, 255, 255, 0.4) 13%, rgba(255, 255, 255, 0) 14%) 130px 370px, radial-gradient(rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.1) 11%, rgba(255, 255, 255, 0.2) 13%, rgba(255, 255, 255, 0) 14%) 0 0, linear-gradient(45deg, #343702 0%, #184500 20%, #187546 30%, #006782 40%, #0b1284 50%, #760ea1 60%, #83096e 70%, #840b2a 80%, #b13e12 90%, #e27412 100%);
+  background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
+  background-color: #840b2a;
 }
 .game.paused .paused-text-container {
   display: block;
@@ -67,10 +70,14 @@ body {
 .ground svg .verticals {
   stroke: darkcyan;
   stroke-width: 2px;
+  position: relative;
+  z-index: 10;
 }
 .ground svg .fretboard {
   fill: #334;
-  opacity: 0.5;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
   stroke: #2A2A33;
   stroke-width: 2px;
 }
