@@ -180,9 +180,22 @@ var Game = Backbone.View.extend({
       .attr('height', h);
 
     d3.select(this.el).select('.horizon').style('top', function () {
-      var z = that.timeScale(new Date(that.date.getTime()) + (that.options.accuracyOffset / 2));
+      var z = that.timeScale.range()[0];
       var p = 1 / that.projectionScale(z);
-      return Math.ceil(that.yScale(p)) + 'px';
+      var delta = 2 / (that.options.keys.length + 1);
+      return (that.yScale(p) + 5) + 'px';
+    });
+
+    d3.select(this.el).select('.horizon').style('left', function () {
+      var z = that.timeScale.range()[0];
+      var p = 1 / that.projectionScale(z);
+      return (that.xScale(-1 * p) - 5) + 'px';
+    });
+
+    d3.select(this.el).select('.horizon').style('right', function () {
+      var z = that.timeScale.range()[0];
+      var p = 1 / that.projectionScale(z);
+      return (that.xScale(-1 * p) - 5) + 'px';
     });
 
     d3.select('.fretboard').attr('d', function () {

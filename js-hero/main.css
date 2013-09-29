@@ -41,12 +41,15 @@ body {
   cursor: pointer;
 }
 .horizon {
-  position: absolute;
+  height: 3px;
   left: 0;
   right: 0;
+  overflow: visible;
   background-color: #8dc63f;
-  height: 1px;
-  z-index: 10;
+  position: absolute;
+  z-index: 100;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 .ground {
   position: absolute;
@@ -71,13 +74,13 @@ body {
   stroke-width: 2px;
   fill: #2A2A33;
   position: relative;
-  z-index: 10;
+  z-index: 100;
 }
 .ground svg .fretboard {
   fill: #334;
   opacity: 1;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   stroke: #2A2A33;
   stroke-width: 2px;
 }
