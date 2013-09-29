@@ -44,9 +44,8 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 100px;
   background-color: #8dc63f;
-  height: 5px;
+  height: 1px;
   z-index: 10;
 }
 .ground {
@@ -70,6 +69,7 @@ body {
 .ground svg .verticals {
   stroke: darkcyan;
   stroke-width: 2px;
+  fill: #2A2A33;
   position: relative;
   z-index: 10;
 }

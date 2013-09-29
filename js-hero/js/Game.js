@@ -208,7 +208,8 @@ var Game = Backbone.View.extend({
       while (1 > (i += delta)) {
         segs.push(
           'M ' + that.xScale(0) + ',' + that.yScale(0) + ' ' +
-          'L ' + that.xScale(1 * near * i) + ',' + that.yScale(near)
+          'L ' + that.xScale(1 * near * i) + ',' + that.yScale(near - delta) +
+          'L ' + that.xScale(1 * i) + ',' + that.yScale(near)
         );
       }
       return segs.join(' ');
