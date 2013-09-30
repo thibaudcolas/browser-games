@@ -26,3 +26,7 @@ Another implementation of [this game](https://github.com/jakesgordon/javascript-
 ## JS Hero
 
 Original game engine / experiment by [Inline Block](https://github.com/inlineblock/javascript-hero).
+
+## Canvas Cosmos
+
+Made by [Professor Cloud](http://www.professorcloud.com/mainsite/canvas-nebula.htm).
