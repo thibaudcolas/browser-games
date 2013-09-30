@@ -9,9 +9,7 @@
   var ctx3 = canvas3.getContext('2d');
   var w = canvas.width;
   var h = canvas.height;
-  var img = new Image();
-  img.src = 'cosmos.jpg';
-  ctx3.drawImage(img, 0, 0, 570, 570);
+  var img = document.getElementById('cosmos');
 
   var puffs = [];
 
@@ -60,7 +58,9 @@
     window.requestAnimationFrame(loop, canvas);
   }
 
-
-  loop();
+  img.addEventListener('load', function () {
+    ctx3.drawImage(img, 0, 0, 570, 570);
+    loop();
+  });
 
 })();
