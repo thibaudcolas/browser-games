@@ -30,3 +30,7 @@ Original game engine / experiment by [Inline Block](https://github.com/inlineblo
 ## Canvas Cosmos
 
 Made by [Professor Cloud](http://www.professorcloud.com/mainsite/canvas-nebula.htm).
+
+## Three.js trails
+
+Inspired by [one of the experiments](http://hakim.se/experiments/html5/trail/01/) of Hakimel.
