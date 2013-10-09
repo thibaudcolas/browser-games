@@ -28,6 +28,13 @@
     renderer = new THREE.CanvasRenderer();
     renderer.setSize(view.w, view.h);
 
+
+    var geometry = new THREE.CubeGeometry(1,1,1);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    camera.position.z = 5;
+
     document.body.appendChild(renderer.domElement);
   }
 
