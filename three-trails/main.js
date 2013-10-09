@@ -28,21 +28,30 @@
     renderer = new THREE.CanvasRenderer();
     renderer.setSize(view.w, view.h);
 
+    camera.position.z = 50;
 
-    var geometry = new THREE.CubeGeometry(1,1,1);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    camera.position.z = 5;
+    var mat = new THREE.ParticleBasicMaterial({color: new THREE.Color(Math.random() * 0x404040 + 0xaaaaaa, 1), size: 3});
+    var particle = new THREE.Particle(mat);
+
+    //particle.position.x = 3;
+    //particle.position.y = 3;
+    //particle.position.z = 5;
+    //particle.offset = { x: 0, y: 0, z: 0 };
+    //particle.shift = { x: 0, y: 0 };
+    //particle.speed = 0.01+Math.random()*0.04;
+    //particle.targetSize = 10;
+
+   scene.add(particle);
 
     document.body.appendChild(renderer.domElement);
   }
 
   function loop() {
-    camera.updateMatrix();
+    //camera.updateMatrix();
     renderer.render(scene, camera);
 
     window.requestAnimationFrame(loop);
   }
 
 })(window.THREE);
+
