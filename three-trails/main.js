@@ -19,6 +19,8 @@
   var scene;
   var renderer;
 
+  var trails = [];
+
   init();
   loop();
 
@@ -29,36 +31,30 @@
     renderer = new THREE.CanvasRenderer();
     renderer.setSize(view.w, view.h);
 
-    var material = new THREE.ParticleBasicMaterial({ color: new THREE.Color(Math.random() * 0x404040 + 0xaaaaaa, 1)});
-    var particle = new THREE.Particle(material);
-
-    particle.position.x = 3;
-    particle.position.y = 3;
-    particle.position.z = 5;
-    particle.offset = {x: 0, y: 0, z: 0};
-    particle.shift = {x: 0, y: 0};
-
-   scene.add(particle);
-
-    material = new THREE.ParticleBasicMaterial({ color: new THREE.Color(Math.random() * 0x404040 + 0xaaaaaa, 1)});
-    particle = new THREE.Particle(material);
-
-    particle.position.x = -3;
-    particle.position.y = -3;
-    particle.position.z = 5;
-    particle.offset = {x: 0, y: 0, z: 0};
-    particle.shift = {x: 0, y: 0};
-
-   scene.add(particle);
+    var particle;
+    var material;
+    for (var i = 0; i < 10; i++) {
+      material = new THREE.ParticleBasicMaterial({ color: new THREE.Color(Math.random() * 0x404040 + 0xaaaaaa, 1)});
+      particle = new THREE.Particle(material);
+      particle.position.x = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 10);
+      particle.position.y = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 10);
+      particle.position.z = 3;
+      particle.offset = {x: 0, y: 0, z: 0};
+      particle.shift = {x: 0, y: 0};
+      trails.push(particle);
+      scene.add(particle);
+    }
 
     document.body.appendChild(renderer.domElement);
   }
 
   function loop() {
+
     renderer.render(scene, camera);
 
     window.requestAnimationFrame(loop);
   }
 
 })(window.THREE);
+
 
