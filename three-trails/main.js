@@ -24,6 +24,10 @@
   init();
   loop();
 
+  function onMouseMove() {}
+  function onTouchStart() {}
+  function onTouchMove() {}
+
   function init() {
     camera = new THREE.PerspectiveCamera(100, view.w / view.h, 1, 1000);
     camera.position.z = 10;
@@ -44,6 +48,10 @@
       trails.push(particle);
       scene.add(particle);
     }
+
+    document.addEventListener('mousemove', onMouseMove, false);
+    document.addEventListener('touchstart', onTouchStart, false);
+    document.addEventListener('touchmove', onTouchMove, false);
 
     document.body.appendChild(renderer.domElement);
   }
