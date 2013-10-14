@@ -72,6 +72,8 @@
     for (var i = 0; i < 10; i++) {
       trails[i].position.x += (Math.random() > 0.5 ? 0.1 : -0.1);
       trails[i].position.y += (Math.random() > 0.5 ? 0.1 : -0.1);
+      trails[i].position.x += (mouse.x > 0 ? 0.1 : -0.1);
+      trails[i].position.y += (mouse.y > 0 ? 0.1 : -0.1);
     }
 
     renderer.render(scene, camera);
