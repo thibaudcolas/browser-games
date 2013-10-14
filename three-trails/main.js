@@ -24,9 +24,20 @@
   init();
   loop();
 
-  function onMouseMove() {}
-  function onTouchStart() {}
-  function onTouchMove() {}
+  function onMouseMove(e) {
+    mouse.x = e.clientX - view.center.x;
+    mouse.y = e.clientY - view.center.y;
+  }
+
+  function onTouch(e) {
+    if(e.touches.length == 1) {
+
+      e.preventDefault();
+
+      mouse.x = e.touches[0].pageX - view.center.x;
+      mouse.y = e.touches[0].pageY - view.center.y;
+    }
+  }
 
   function init() {
     camera = new THREE.PerspectiveCamera(100, view.w / view.h, 1, 1000);
@@ -50,8 +61,8 @@
     }
 
     document.addEventListener('mousemove', onMouseMove, false);
-    document.addEventListener('touchstart', onTouchStart, false);
-    document.addEventListener('touchmove', onTouchMove, false);
+    document.addEventListener('touchstart', onTouch, false);
+    document.addEventListener('touchmove', onTouch, false);
 
     document.body.appendChild(renderer.domElement);
   }
