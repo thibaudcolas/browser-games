@@ -2,5 +2,11 @@
 
 angular
   .module('twentyfourtyeightApp', [
-    'ngCookies'
-  ]);
+    'ngCookies',
+    'Game'
+  ])
+  .controller('GameController', [
+    'GameManager',
+    function (GameManager) {
+    this.game = GameManager;
+  }]);
