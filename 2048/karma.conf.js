@@ -14,7 +14,6 @@ module.exports = function(config) {
       'app/bower_components/angular/angular.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-cookies/angular-cookies.js',
-      'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'
     ],
@@ -42,7 +41,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
