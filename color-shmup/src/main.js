@@ -9,31 +9,10 @@ var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
 ];
 
-var getColorAmount = function (color) {
-  var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  var all = pixels.data.length;
-  var amount = 0;
-  for (var i = 0; i < all; i += 4) {
-    if (pixels.data[i] === color.r && pixels.data[i + 1] === color.g && pixels.data[i + 2] === color.b) {
-      amount++;
-    }
-  }
-  return amount;
-};
-
 var background;
 var player;
 
 var reset = function () {
-  player = {
-    x: canvas.width/2,
-    y: rand.int(canvas.height / 2),
-    radius: rand.range(50, 60),
-    dx: rand.range(-100, 100),
-    dy: 0,
-    color: rand.pick(colors)
-  };
-
   background = [];
 
   for (var i = 0; i < 3; i++) {
@@ -47,6 +26,15 @@ var reset = function () {
       });
     }
   }
+
+  player = {
+    x: canvas.width/2,
+    y: rand.int(canvas.height / 2),
+    radius: rand.range(50, 60),
+    dx: rand.range(-100, 100),
+    dy: 0,
+    color: rand.pick(colors)
+  };
 };
 
 reset();
