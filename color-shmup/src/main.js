@@ -9,8 +9,20 @@ var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
 ];
 
-var balls = [];
-var player = {};
+var getColorAmount = function (color) {
+  var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var all = pixels.data.length;
+  var amount = 0;
+  for (var i = 0; i < all; i += 4) {
+    if (pixels.data[i] === color.r && pixels.data[i + 1] === color.g && pixels.data[i + 2] === color.b) {
+      amount++;
+    }
+  }
+  return amount;
+};
+
+var background;
+var player;
 
 var reset = function () {
   player = {
@@ -22,17 +34,18 @@ var reset = function () {
     color: rand.pick(colors)
   };
 
-  balls = [];
+  background = [];
 
-  for (var i = 0; i < 10; i++) {
-    balls.push({
-      x: rand.int(canvas.width),
-      y: rand.int(canvas.height / 2),
-      radius: rand.range(15, 35),
-      dx: rand.range(-100, 100),
-      dy: 0,
-      color: rand.pick(colors)
-    });
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      background.push({
+        x: i * canvas.width / 3,
+        y: j * canvas.height / 3,
+        width: canvas.width / 3,
+        height: canvas.height / 3,
+        color: rand.pick(colors)
+      });
+    }
   }
 };
 
@@ -44,25 +57,9 @@ raf.start(function (elapsed) {
   // Clear the screen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Update each balls
-  balls.forEach(function(ball) {
-    // Gravity
-    ball.dy += elapsed * 1500;
-
-    // Handle collision against the canvas's edges
-    if (ball.x - ball.radius < 0 && ball.dx < 0 || ball.x + ball.radius > canvas.width && ball.dx > 0) ball.dx = -ball.dx * 0.7;
-    if (ball.y - ball.radius < 0 && ball.dy < 0 || ball.y +  ball.radius > canvas.height && ball.dy > 0) ball.dy = -ball.dy * 0.7;
-
-    // Update ball position
-    ball.x += ball.dx * elapsed;
-    ball.y += ball.dy * elapsed;
-
-    // Render the ball
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.fillStyle = ball.color;
-    ctx.fill();
+  background.forEach(function (bg) {
+    ctx.fillStyle = bg.color;
+    ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
   });
 
   // Gravity
