@@ -1,5 +1,6 @@
 var raf = require('./raf');
 var rng = require('./rng');
+var kd = require('./keydrown');
 
 var canvas = document.querySelector('#game');
 var ctx = canvas.getContext('2d');
@@ -25,6 +26,8 @@ for (var i = 0; i < 50; i++) {
 }
 
 raf.start(function(elapsed) {
+  kd.tick();
+
   // Clear the screen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -35,7 +38,7 @@ raf.start(function(elapsed) {
 
     // Handle collision against the canvas's edges
     if (ball.x - ball.radius < 0 && ball.dx < 0 || ball.x + ball.radius > canvas.width && ball.dx > 0) ball.dx = -ball.dx * 0.7;
-    if (ball.y - ball.radius < 0 && ball.dy < 0 || ball.y + ball.radius > canvas.height && ball.dy > 0) ball.dy = -ball.dy * 0.7;
+    if (ball.y - ball.radius < 0 && ball.dy < 0 || ball.y +  ball.radius > canvas.height && ball.dy > 0) ball.dy = -ball.dy * 0.7;
 
     // Update ball position
     ball.x += ball.dx * elapsed;
@@ -48,4 +51,32 @@ raf.start(function(elapsed) {
     ctx.fillStyle = ball.color;
     ctx.fill();
   });
+});
+
+kd.SPACE.down(function () {
+  console.log('SPACE');
+
+  balls.forEach(function(ball) {
+    ball.dy -= 100;
+  });
+});
+
+kd.UP.down(function () {
+  console.log('UP');
+});
+
+kd.DOWN.down(function () {
+  console.log('DOWN');
+});
+
+kd.LEFT.down(function () {
+  console.log('LEFT');
+});
+
+kd.RIGHT.down(function () {
+  console.log('RIGHT');
+});
+
+kd.ESC.down(function () {
+  console.log('ESC');
 });
