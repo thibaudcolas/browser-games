@@ -1,6 +1,7 @@
 var program = require('commander');
 var browserify = require('browserify');
-var express = require('express');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 var path = require('path');
 var rimraf = require('rimraf');
 
@@ -98,20 +99,20 @@ gulp.task('dist', ['build'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', function() {
-  gulp.watch('src/**/*.js', ['lint', 'build_source']);
-  gulp.watch('src/styles.less', ['build_styles']);
-  gulp.watch('src/index.html', ['build_index']);
-});
-
-gulp.task('serve', ['build'], function() {
-  var htdocs = path.resolve(__dirname, 'build');
-  var app = express();
-
-  app.use(express.static(htdocs));
-  app.listen(3000, function() {
-    gutil.log("Server started on '" + gutil.colors.green('http://localhost:3000') + "'");
+// Watch Files For Changes & Reload
+gulp.task('serve', ['build'], function () {
+  browserSync({
+    notify: false,
+    server: {
+      baseDir: ['build']
+    }
   });
+
+  gutil.log("Server started on '" + gutil.colors.green('http://localhost:3000') + "'");
+
+  gulp.watch(['src/**/*.js'], ['lint', 'build_source', reload]);
+  gulp.watch(['src/styles.less'], ['build_styles', reload]);
+  gulp.watch(['src/index.html'], ['build_index', reload]);
 });
 
 // Deploy to GitHub Pages.
