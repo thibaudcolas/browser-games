@@ -18,6 +18,7 @@ var size = require('gulp-size');
 var uglify = require('gulp-uglify');
 var zip = require('gulp-zip');
 var source = require('vinyl-source-stream');
+var deploy = require('gulp-gh-pages');
 
 program.on('--help', function(){
   console.log('  Tasks:');
@@ -111,6 +112,18 @@ gulp.task('serve', ['build'], function() {
   app.listen(3000, function() {
     gutil.log("Server started on '" + gutil.colors.green('http://localhost:3000') + "'");
   });
+});
+
+// Deploy to GitHub Pages.
+gulp.task('deploy', function () {
+  gutil.log("Deploying to GitHub Pages");
+
+  gulp.src('build/*')
+    .pipe(deploy({
+      remoteUrl: 'git@github.com:ThibWeb/browser-games.git',
+      origin: 'origin',
+      branch: 'gh-pages'
+    }));
 });
 
 function browserifyError(err) {

@@ -22,6 +22,7 @@
     "gulp-util": "^3.0.0",
     "gulp-zip": "^2.0.1",
     "rimraf": "^2.2.8",
-    "vinyl-source-stream": "^0.1.1"
+    "vinyl-source-stream": "^0.1.1",
+    "gulp-gh-pages": "^0.3.3"
   }
 }
