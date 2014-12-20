@@ -46,9 +46,13 @@ raf.start(function (elapsed) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   background.forEach(function (bg) {
+    bg.y += elapsed * 20;
+
     ctx.fillStyle = bg.color;
     ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
   });
+
+  background.shift();
 
   // Gravity
   // player.dy += elapsed * 1500;
@@ -67,9 +71,11 @@ raf.start(function (elapsed) {
   ctx.closePath();
   ctx.fillStyle = player.color;
   ctx.fill();
+  ctx.fillRect(player.x - player.radius, player.y, player.radius, player.radius);
+  ctx.fillRect(player.x, player.y, player.radius, player.radius);
 });
 
-kd.SPACE.down(function () {
+kd.SPACE.up(function () {
   console.log('SPACE');
 
   player.color = rand.pick(colors);
@@ -95,7 +101,7 @@ kd.RIGHT.down(function () {
   player.dx += 50;
 });
 
-kd.ESC.down(function () {
+kd.ESC.up(function () {
   console.log('ESC');
   reset();
 });
