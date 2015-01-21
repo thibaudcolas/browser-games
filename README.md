@@ -34,3 +34,11 @@ Made by [Professor Cloud](http://www.professorcloud.com/mainsite/canvas-nebula.h
 ## Three.js trails
 
 Inspired by [one of the experiments](http://hakim.se/experiments/html5/trail/01/) of Hakimel.
+
+## Color Shmup
+
+Prototype for the JS13K 2014 contest.
+
+## Phaser Platformer
+
+Experiments while [learning Phaser](http://www.photonstorm.com/phaser/tutorial-making-your-first-phaser-game).
