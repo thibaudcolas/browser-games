@@ -42,7 +42,7 @@ function create() {
   ledge.body.immovable = true;
 
   // The player and its settings
-  var player = game.add.sprite(32, game.world.height - 150, 'dude');
+  player = game.add.sprite(32, game.world.height - 150, 'dude');
 
   //  We need to enable physics on the player
   game.physics.arcade.enable(player);
@@ -58,6 +58,7 @@ function create() {
 }
 
 function update() {
+  game.physics.arcade.collide(player, platforms);
 }
 
 </script>
