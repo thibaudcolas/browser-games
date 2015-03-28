@@ -1,0 +1,8 @@
+{
+  "name": "reactive-pacman",
+  "version": "0.0.0",
+  "dependencies": {
+    "bacon": "~0.7.53",
+    "unicodetiles.js": "git@github.com:tapio/unicodetiles.js.git"
+  }
+}
