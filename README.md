@@ -42,3 +42,7 @@ Prototype for the JS13K 2014 contest.
 ## Phaser Platformer
 
 Experiments while [learning Phaser](http://www.photonstorm.com/phaser/tutorial-making-your-first-phaser-game).
+
+## Reactive Pacman
+
+Implementation of a tutorial on Bacon.js from [SitePoint](www.sitepoint.com/building-pacman-with-bacon-js/).
