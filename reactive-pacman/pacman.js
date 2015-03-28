@@ -9,22 +9,78 @@ window.Pacman = (function() {
   Pacman.prototype.start = function() {
     this.gameOver = false;
 
-    // this.generateMap();
+    this.p1 = {
+      x: 14,
+      y: 12,
+      tile: '€' //this.TilePacmanLeft[0]
+    };
+
+    this.ghosts = [];
+
+    this.generateMap();
+
+    this.termConfig = {
+      hud: {
+        x: 3,
+        y: 1
+      },
+      gameArea: {
+        x: 3,
+        y: 3
+      }
+    };
 
     this.term = new ut.Viewport(this.container, 50, 30);
 
-    this.term.clear();
-
-    this.term.putString("Hello world!", 0,0, 0,255,0);
-    this.term.putString("Some unicode chars: ", 0,2, 128,0,0, 0,32,0);
-    this.term.putString("☠☃⚙☻♞☭✈✟✂✯", 0,3, 0,0,255);
-
-    this.term.render();
-
     // ut.initInput(this.onKeyDown.bind(this));
 
-    // this.tick();
+    this.tick();
   };
+
+  Pacman.prototype.generateMap = function() {
+    this.map = [
+      '############################',
+      '#o...........##...........o#',
+      '#.####.#####.##.#####.####.#',
+      '#.####.#####.##.#####.####.#',
+      '#..........................#',
+      '#.####.#.##########.#.####.#',
+      '#......#.....##.....#......#',
+      '######.#####.##.#####.######',
+      '     #.#............#.#     ',
+      '######.#.####  ####.#.######',
+      '.........#        #.........',
+      '######.#.##########.#.######',
+      '     #.#............#.#     ',
+      '######.#.##########.#.######',
+      '#............##............#',
+      '#.####.#####.##.#####.####.#',
+      '#...##................##...#',
+      '###.##.#.##########.#.##.###',
+      '#......#.....##.....#......#',
+      '#.##########.##.##########.#',
+      '#o........................o#',
+      '############################'
+    ];
+  };
+
+  Pacman.prototype.putTiles = function() {
+    var base = this.termConfig.gameArea;
+    var rowLength = this.map[0].length;
+
+    for (var y = 0; y < this.map.length; y++) {
+      for (var x = 0; x < rowLength; x++) {
+        this.term.put(new ut.Tile('X', 150, 75, 0), base.x + x, base.y + y);
+      }
+    }
+  };
+
+  Pacman.prototype.tick = function() {
+    this.term.clear();
+    this.putTiles();
+    this.term.render();
+  };
+
 
   return Pacman;
 }())
