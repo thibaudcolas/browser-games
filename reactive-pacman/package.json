@@ -1,0 +1,11 @@
+{
+  "name": "reactive-pacman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "browser-sync start --server --files='index.html,*.js' --no-notify --no-ghost --no-online"
+  },
+  "author": "",
+  "license": "ISC"
+}
