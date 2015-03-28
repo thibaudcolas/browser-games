@@ -1,7 +1,7 @@
 'use strict';
 
 $(document).ready(function() {
-  restartGame($('<div/>'));
+  restartGame($('.pacman-game')[0]);
 });
 
 function restartGame(container) {
