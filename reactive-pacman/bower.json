@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "bacon": "~0.7.53",
-    "unicodetiles.js": "git@github.com:tapio/unicodetiles.js.git"
+    "unicodetiles.js": "git@github.com:tapio/unicodetiles.js.git",
+    "jquery": "~2.1.3"
   }
 }
