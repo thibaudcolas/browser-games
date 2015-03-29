@@ -38,13 +38,13 @@ window.Pacman = (function() {
     };
 
     this.TileDisplay = {
-      WALL: new ut.Tile(' ', 0, 0, 0, 100, 100, 100),
-      POINT: new ut.Tile('▪', 150, 0, 150),
-      BIGP: new ut.Tile('O', 150, 0, 150),
+      WALL: new ut.Tile(' ', 0, 0, 0, 0, 71, 241),
+      POINT: new ut.Tile('・', 238, 179, 149),
+      BIGP: new ut.Tile('●', 238, 179, 149),
       EMPTY: new ut.Tile(' ', 100, 100, 100)
     };
 
-    this.term = new ut.Viewport(this.container, 50, 30);
+    this.term = new ut.Viewport(this.container, 50, 30, 'auto', true);
 
     // ut.initInput(this.onKeyDown.bind(this));
 
