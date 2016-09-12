@@ -121,7 +121,7 @@ gulp.task('deploy', function () {
 
   gulp.src('build/*')
     .pipe(deploy({
-      remoteUrl: 'git@github.com:ThibWeb/browser-games.git',
+      remoteUrl: 'git@github.com:thibaudcolas/browser-games.git',
       origin: 'origin',
       branch: 'gh-pages'
     }));
